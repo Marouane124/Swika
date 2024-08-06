@@ -4,21 +4,29 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Nav from '../components/nav';
-import ProductCard from '../components/prodcard';
 import Footer from '../components/footer'; 
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { Annonce } from '@/types/types';
+import AnnonceCard from '../components/AnnonceCard';
 
 const Page: React.FC = () => {
   const [annonces, setAnnonces] = useState<Annonce[]>([]);
-  const [fileInfo, setFileInfo] = useState<{ name: string; size: number } | null>(null);
+  const [visibleAnnonces, setVisibleAnnonces] = useState<Annonce[]>([]);
+  const [itemsToShow, setItemsToShow] = useState(4);
   const router = useRouter();
 
   useEffect(() => {
     const fetchAnnonces = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces?populate=*`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces`, {
+          params: {
+            sort: ['updatedAt:desc'],
+            populate: '*'
+          }
+        });
         setAnnonces(response.data.data);
+        setVisibleAnnonces(response.data.data.slice(0, 4));
       } catch (error) {
         console.error('Error fetching annonces:', error);
       }
@@ -27,16 +35,14 @@ const Page: React.FC = () => {
     fetchAnnonces();
   }, []);
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setFileInfo({ name: file.name, size: file.size });
-      console.log('Selected file:', file);
-    }
+  const handleClick = () => {
+    router.push("/formulaireAnnonce");
   };
 
-  const handleClick = () => {
-    router.push("/signin");
+  const loadMore = () => {
+    const nextItemsToShow = itemsToShow + 4;
+    setItemsToShow(nextItemsToShow);
+    setVisibleAnnonces(annonces.slice(0, nextItemsToShow));
   };
 
   return (
@@ -56,11 +62,23 @@ const Page: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 p-4 mb-12">
-        {annonces.map(annonce => (
-          <ProductCard key={annonce.id} product={annonce.attributes} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6 p-4 mb-12">
+        {visibleAnnonces.map(annonce => (
+          <AnnonceCard key={annonce.id} annonce={annonce.attributes} />
         ))}
       </div>
+
+      {itemsToShow < annonces.length && (
+        <div className="flex justify-center mb-12">
+          <button
+            onClick={loadMore}
+            className="px-3 py-2 text-lg font-medium transition-colors duration-300 bg-purple-600 text-white rounded-lg focus:shadow-outline hover:bg-purple-700"
+          >
+            Plus d&apos;annonces
+            <ArrowDownwardIcon style={{ marginLeft: "3", marginRight: "-4" }}/>
+          </button>
+        </div>
+      )}
 
       <Footer />
     </div>

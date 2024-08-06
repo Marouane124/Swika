@@ -27,6 +27,7 @@ export interface User {
 }
 
 export interface AnnonceAttributes {
+  id: number;
   title: string;
   description: string;
   price: number;

@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
                 <Link href="/mes-annonces" className="text-gray-700 hover:text-purple-500 text-sm">
                   Mes annonces
                 </Link>
-                <Link href="/nouvelle-annonce" className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 text-sm">
+                <Link href="/formulaireAnnonce" className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 text-sm">
                   Nouvelle annonce
                 </Link>
                 <div className="relative">
@@ -122,7 +122,7 @@ const Navbar: React.FC = () => {
                   <Link href="/mes-annonces" className="text-gray-700 hover:text-purple-500 text-sm" onClick={closeMenu}>
                     Mes annonces
                   </Link>
-                  <Link href="/nouvelle-annonce" className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 text-sm" onClick={closeMenu}>
+                  <Link href="/formulaireAnnonce" className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 text-sm" onClick={closeMenu}>
                     Nouvelle annonce
                   </Link>
                   <Logoutbutton />
