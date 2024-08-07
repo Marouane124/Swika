@@ -1,10 +1,9 @@
 "use client";
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Nav from '../components/nav';
-import Footer from '../components/footer'; 
+import Footer from '../components/footer';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { Annonce } from '@/types/types';
@@ -22,7 +21,14 @@ const Page: React.FC = () => {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces`, {
           params: {
             sort: ['updatedAt:desc'],
-            populate: '*'
+            populate: {
+              immobilier: {
+                populate: ['photo']
+              },
+              vehicule: {
+                populate: ['photo']
+              }
+            }
           }
         });
         setAnnonces(response.data.data);
@@ -56,7 +62,7 @@ const Page: React.FC = () => {
             onClick={handleClick}
             className="max-w-sm flex items-center justify-center h-12 px-4 text-lg font-medium transition-colors duration-300 bg-teal-600 text-white rounded-lg focus:shadow-outline hover:bg-teal-700"
           >
-            <EditNoteIcon style={{ marginRight: "5" }}/>
+            <EditNoteIcon style={{ marginRight: "5" }} />
             <span>Publier maintenant</span>
           </button>
         </div>
@@ -75,7 +81,7 @@ const Page: React.FC = () => {
             className="px-3 py-2 text-lg font-medium transition-colors duration-300 bg-purple-600 text-white rounded-lg focus:shadow-outline hover:bg-purple-700"
           >
             Plus d&apos;annonces
-            <ArrowDownwardIcon style={{ marginLeft: "3", marginRight: "-4" }}/>
+            <ArrowDownwardIcon style={{ marginLeft: "3", marginRight: "-4" }} />
           </button>
         </div>
       )}
@@ -86,3 +92,4 @@ const Page: React.FC = () => {
 };
 
 export default Page;
+
