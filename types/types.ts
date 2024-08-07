@@ -3,9 +3,42 @@ export interface ImageAttributes {
 }
 
 export interface ImageData {
-  data: {
-    attributes: ImageAttributes;
+  id: number;
+  attributes: ImageAttributes;
+}
+
+export interface ImmobilierAttributes {
+  type: string;
+  adresse: string;
+  chambre: number;
+  salon: number;
+  toilette: number;
+  surface: number;
+  photo: {
+    data: ImageData[];
   };
+}
+
+export interface Immobilier {
+  data: {
+    id: number;
+    attributes: ImmobilierAttributes;
+  };
+}
+
+export interface VehiculeAttributes {
+  model: string;
+  year: number;
+  photo: {
+    data: ImageData[];
+  };
+}
+
+export interface Vehicule {
+  data: {
+    id: number;
+    attributes: VehiculeAttributes;
+  } | null;
 }
 
 export interface UserAttributes {
@@ -36,8 +69,8 @@ export interface AnnonceAttributes {
   publishedAt: string;
   category: string;
   location: string;
-  image?: ImageData;
-  users_permissions_user: User;
+  immobilier?: Immobilier;
+  vehicule?: Vehicule;
 }
 
 export interface Annonce {
