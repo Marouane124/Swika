@@ -56,17 +56,17 @@ export const authConfig: NextAuthOptions = {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
-        token.jwt = user.jwt;
+        //token.jwt = user.jwt;
       }
       //console.log("JWT callback, token:", token);
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id as string;
+        //session.user.id = token.id as string;
         session.user.email = token.email as string;
         session.user.name = token.name as string;
-        session.user.jwt = token.jwt as string;
+        //session.user.jwt = token.jwt as string;
       }
       //console.log("Session callback, session:", session);
       return session;
