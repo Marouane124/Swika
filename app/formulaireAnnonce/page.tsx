@@ -49,17 +49,17 @@ const FormulaireAnnonce = () => {
       ...(category === 'Meubles' && {
         type: formData.type,
         address: formData.address,
-        chambre: parseInt(formData.chambre),
-        salon: parseInt(formData.salon),
-        toillette: parseInt(formData.toillette),
+        chambre: parseInt(formData.chambre, 10),
+        salon: parseInt(formData.salon, 10),
+        toillette: parseInt(formData.toillette, 10),
         surface: parseFloat(formData.surface),
       }),
-      ...(category === 'Vehicules' && {
+      ...(category === 'Véhicules' && {
         type: formData.type,
         modele: formData.modele,
         marque: formData.marque,
-        annee: parseInt(formData.annee),
-        kilometrage: parseInt(formData.kilometrage),
+        annee: parseInt(formData.annee, 10),
+        kilometrage: parseInt(formData.kilometrage, 10),
       }),
     };
 
@@ -70,7 +70,7 @@ const FormulaireAnnonce = () => {
     }
 
     try {
-      const response = await axios.post('http://163.172.170.136:1337/api/annonces', formDataObj, {
+      const response = await axios.post(`${process.env.STRAPI_URL}/api/annonces`, formDataObj, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -81,9 +81,9 @@ const FormulaireAnnonce = () => {
       let errorMessage: string;
 
       if (axios.isAxiosError(error)) {
-        errorMessage = error.response ?
-          `Error saving annonce: ${error.response.status} ${error.response.statusText}` :
-          `Error saving annonce: ${error.message}`;
+        errorMessage = error.response
+          ? `Error saving annonce: ${error.response.status} ${error.response.statusText}`
+          : `Error saving annonce: ${error.message}`;
       } else {
         errorMessage = `Error saving annonce: ${String(error)}`;
       }
@@ -180,7 +180,7 @@ const FormulaireAnnonce = () => {
             >
               <option value="" disabled>Sélectionnez une catégorie</option>
               <option value="Meubles">Meubles</option>
-              <option value="Vehicules">Véhicules</option>
+              <option value="Véhicules">Véhicules</option>
             </select>
           </div>
           {category === 'Meubles' && (
@@ -265,7 +265,7 @@ const FormulaireAnnonce = () => {
               </div>
             </>
           )}
-          {category === 'Vehicules' && (
+          {category === 'Véhicules' && (
             <>
               <div className="mb-4">
                 <label htmlFor="type" className="block text-sm font-medium text-gray-700">
@@ -334,25 +334,22 @@ const FormulaireAnnonce = () => {
               </div>
             </>
           )}
-          {category && (
-            <div className="mb-4">
-              <label htmlFor="image" className="block text-sm font-medium text-gray-700">
-                Image :
-              </label>
-              <input
-                type="file"
-                id="image"
-                name="image"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="block w-full text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
-          )}
-          <div className="mt-6">
+          <div className="mb-4">
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+              Image :
+            </label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              onChange={handleImageChange}
+              className="block w-full pl-2 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+          <div className="flex justify-center">
             <button
               type="submit"
-              className="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
               Enregistrer
             </button>
