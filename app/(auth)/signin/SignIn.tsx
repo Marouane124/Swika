@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
 import GoogleSignInButton from '@/components/GoogleButton';
@@ -13,6 +13,7 @@ import ForgotPassword from '@/components/ForgotPassword';
 
 export default function SignIn() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = React.useState(false);
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = React.useState(false);
 
@@ -44,15 +45,15 @@ export default function SignIn() {
       toast.success('Connecté avec succès !', {
         duration: 1000,
       });
-      router.push("/");
+
+      const redirectUrl = searchParams.get('redirect') || '/';
+      router.push(redirectUrl);
     }
   };
 
   const toggleShowPassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-
-  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

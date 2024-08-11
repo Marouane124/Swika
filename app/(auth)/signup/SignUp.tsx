@@ -10,7 +10,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import LockIcon from '@mui/icons-material/Lock';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { registerUserAction } from "../../actions/auth-actions";
+import { registerUserAction } from '@/actions/auth-actions';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { z } from 'zod';
 
