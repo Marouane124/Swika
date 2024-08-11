@@ -1,26 +1,26 @@
 import React from 'react';
 import Image from 'next/image';
-import Logo from '@/public/logo.png';
+import Logo from '@/public/Logo.png';
 import { AnnonceAttributes } from '@/types/types';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 const AnnonceCard = ({ annonce }: { annonce: AnnonceAttributes }) => {
-  console.log('Annonce:', annonce);
+  //console.log('Annonce:', annonce);
 
   const immobilierPhotos = annonce.immobilier?.data?.attributes?.photo?.data || [];
   const vehiculePhotos = annonce.vehicule?.data?.attributes?.photo?.data || [];
 
-  const strapiURL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+  const strapiURL = process.env.NEXT_PUBLIC_STRAPI_URL;
   const immobilierPhotoUrl = immobilierPhotos.length > 0 ? `${strapiURL}${immobilierPhotos[0].attributes.url}` : null;
   const vehiculePhotoUrl = vehiculePhotos.length > 0 ? `${strapiURL}${vehiculePhotos[0].attributes.url}` : null;
 
-  console.log('Immobilier Photo URL:', immobilierPhotoUrl);
-  console.log('Vehicule Photo URL:', vehiculePhotoUrl);
+  //console.log('Immobilier Photo URL:', immobilierPhotoUrl);
+  //console.log('Vehicule Photo URL:', vehiculePhotoUrl);
 
   const imageUrl = immobilierPhotoUrl || vehiculePhotoUrl || Logo.src;
   const photoCount = immobilierPhotos.length > 0 ? immobilierPhotos.length : vehiculePhotos.length;
 
-  console.log('Image URL:', imageUrl);
+  //console.log('Image URL:', imageUrl);
 
   const createdAt = new Date(annonce.createdAt);
   const now = new Date();
@@ -55,11 +55,11 @@ const AnnonceCard = ({ annonce }: { annonce: AnnonceAttributes }) => {
       });
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 w-full max-w-xs h-180 flex flex-col relative hover:shadow-gray-400 cursor-pointer">
+    <div className="bg-white rounded-lg shadow-md p-4 w-full max-w-xs flex flex-col relative hover:shadow-gray-400 cursor-pointer h-120">
       <div className="absolute top-2 left-2 bg-gray-800 text-white text-xs px-2 py-1 rounded z-10">
         {formattedDate}
       </div>
-      <div className="relative flex-shrink-0 z-0">
+      <div className="relative flex-shrink-0">
         <Image
           width={300}
           height={300}
@@ -74,15 +74,18 @@ const AnnonceCard = ({ annonce }: { annonce: AnnonceAttributes }) => {
           </div>
         )}
       </div>
-      <div className="flex-grow">
-        <h2 className="text-gray-900 text-xl font-bold mb-2">{annonce.title}</h2>
-        <p className="text-gray-700 mb-2 line-clamp-3">{annonce.description}</p>
-        <p className="text-gray-500 mb-4">Location: {annonce.location}</p>
-      </div>
-      <div className="flex-shrink-0">
-        <button className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
-          Voir les détails
-        </button>
+      <div className="flex-grow flex flex-col justify-between">
+        <div>
+          <h2 className="text-gray-900 text-xl font-bold mb-2">{annonce.title}</h2>
+          <p className="text-gray-700 mb-2 line-clamp-3">{annonce.description}</p>
+        </div>
+        <div>
+          <p className="text-gray-500 mb-2">Location: {annonce.location}</p>
+          <p className="text-gray-900 text-lg mb-4">Prix: {annonce.price ? `${annonce.price} DH` : 'Non spécifié'}</p>
+          <button className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 w-full">
+            Voir les détails
+          </button>
+        </div>
       </div>
     </div>
   );

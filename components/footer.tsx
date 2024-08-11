@@ -1,12 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import LogoNoName from '@/public/LogoNoName.png';
 
 const Footer: React.FC = () => {
   return (
     <footer className="bg-white text-gray-800 py-8">
       <div className="container mx-auto flex flex-col items-center">
-        <Image src="/logo.png" alt="Swika" width={100} height={50} />
+        <Image src={LogoNoName} alt="Swika" width={100} height={50} />
         <p className="mt-4 mb-8 text-lg font-semibold">Abonnez-vous à notre newsletter</p>
         <div className="flex w-full max-w-sm mb-8">
           <input
