@@ -16,24 +16,25 @@ const FormulaireAnnonce = () => {
     price: '',
     location: '',
     type: '',
-    address: '',
+    adresse: '',  
     chambre: 0,
     salon: 0,
-    toillette: 0,
+    toilette: 0, 
     surface: 0,
     modele: '',
     marque: '',
     annee: 0,
     kilometrage: 0,
   });
-  const [images, setImages] = useState<File[]>([]); // State for handling images
+
+  const [images, setImages] = useState<File[]>([]); 
   const [message, setMessage] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: ['price', 'chambre', 'salon', 'toillette', 'surface', 'annee', 'kilometrage'].includes(name)
+      [name]: ['price', 'chambre', 'salon', 'toilette', 'surface', 'annee', 'kilometrage'].includes(name)
         ? parseInt(value, 10)
         : value,
     });
@@ -52,7 +53,6 @@ const FormulaireAnnonce = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Create the base annonce data
     const annonceData = {
       title: formData.title,
       description: formData.description,
@@ -62,7 +62,6 @@ const FormulaireAnnonce = () => {
     };
 
     try {
-      // Create the annonce first
       const response = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces`, { data: annonceData });
       const annonceId = response.data.data.id;
       console.log('Annonce created with ID:', annonceId);
@@ -70,13 +69,13 @@ const FormulaireAnnonce = () => {
       let relatedData = null;
       let relatedId = null;
 
-      if (category === 'Meubles') {
+      if (category === 'Immobilier') {
         relatedData = {
           type: formData.type,
-          adresse: formData.address,
+          adresse: formData.adresse, 
           chambre: formData.chambre,
           salon: formData.salon,
-          toilette: formData.toillette,
+          toilette: formData.toilette, 
           surface: formData.surface,
           annonce: annonceId,
         };
@@ -87,7 +86,7 @@ const FormulaireAnnonce = () => {
         relatedId = immobilierResponse.data.data.id;
         console.log('Immobilier saved:', immobilierResponse.data);
 
-      } else if (category === 'Vehicules') {
+      } else if (category === 'Automobile') {
         relatedData = {
           type: formData.type,
           modele: formData.modele,
@@ -110,7 +109,7 @@ const FormulaireAnnonce = () => {
           formDataObj.append('files', image);
         });
         formDataObj.append('refId', relatedId);
-        formDataObj.append('ref', category === 'Meubles' ? 'api::immobilier.immobilier' : 'api::vehicule.vehicule');
+        formDataObj.append('ref', category === 'Immobilier' ? 'api::immobilier.immobilier' : 'api::vehicule.vehicule');
         formDataObj.append('field', 'photo');
 
         await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/upload`, formDataObj);

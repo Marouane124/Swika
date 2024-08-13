@@ -9,8 +9,8 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import Footer from '../../../components/footer';
-import Nav from '../../../components/Navbar';
+import Footer from '../../../components/PageComponents/Footer';
+import Nav from '../../../components/PageComponents/Navbar';
 
 const DetailAnnonce: React.FC = () => {
   const [annonce, setAnnonce] = useState<Annonce | null>(null);
@@ -176,8 +176,8 @@ const DetailAnnonce: React.FC = () => {
 
               {vehicule?.data && (
                 <div className="text-black bg-white">
-                  <p><strong>Model: </strong>{vehicule.data.attributes.model || 'N/A'}</p>
-                  <p><strong>Year: </strong>{vehicule.data.attributes.year || 'N/A'}</p>
+                  <p><strong>Model: </strong>{vehicule.data.attributes.modele || 'N/A'}</p>
+                  <p><strong>Year: </strong>{vehicule.data.attributes.annee || 'N/A'}</p>
                 </div>
               )}
             </div>

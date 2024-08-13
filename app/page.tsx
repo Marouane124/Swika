@@ -1,17 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/footer";
+import Navbar from "@/components/PageComponents/Navbar";
+import Footer from "@/components/PageComponents/Footer";
 import Loading from "@/components/Loading";
 import { Annonce } from "@/types/types";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import HeroSection from "@/components/PageComponents/HeroSection";
 import CategoriesSection from "@/components/PageComponents/CategoriesSection";
-import SearchFilterSection from "@/components/PageComponents/SearchFilterSection";
-import AnnonceCard from "@/components/AnnonceCard";
+import AnnoncesRecentes from "@/components/PageComponents/AnnoncesRecentes";
+import AnnonceCardOld from "@/components/AnnonceCardOld";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import Newsletter from "@/components/PageComponents/Newsletter";
 
 const Page: React.FC = () => {
   const [annonces, setAnnonces] = useState<Annonce[]>([]);
@@ -51,10 +52,6 @@ const Page: React.FC = () => {
     fetchAnnonces();
   }, [itemsToShow]);
 
-  const handleClick = () => {
-    router.push("/formulaireAnnonce");
-  };
-
   const loadMore = () => {
     const nextItemsToShow = itemsToShow + 4;
     setItemsToShow(nextItemsToShow);
@@ -64,13 +61,14 @@ const Page: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <Navbar />
-      <div className="bg-gray-100 mb-10">Swika</div>
 
-      <HeroSection handleClick={handleClick} />
+      <div className="bg-gray-100 mb-15">Swika</div>
+
+      <HeroSection />
 
       <CategoriesSection />
 
-      <SearchFilterSection />
+      <AnnoncesRecentes />
 
       {loading ? (
         <Loading />
@@ -78,7 +76,7 @@ const Page: React.FC = () => {
         <div className="container mx-auto py-10 px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {visibleAnnonces.map((annonce) => (
-              <AnnonceCard key={annonce.id} annonce={annonce.attributes} />
+              <AnnonceCardOld key={annonce.id} annonce={annonce.attributes} />
             ))}
           </div>
 
@@ -95,6 +93,8 @@ const Page: React.FC = () => {
           )}
         </div>
       )}
+
+      <Newsletter />
 
       <Footer />
     </div>
