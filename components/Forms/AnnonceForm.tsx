@@ -170,8 +170,8 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({
                 <option value="" disabled>
                   Sélectionnez une catégorie
                 </option>
-                <option value="Meubles">Meubles</option>
-                <option value="Vehicules">Véhicules</option>
+                <option value="Immobilier">Immobilier</option>
+                <option value="Automobile">Automobile</option>
               </select>
               <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
                 <CategoryIcon style={{ color: 'gray' }} />
@@ -179,10 +179,10 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({
             </div>
           </div>
 
-          {category === 'Meubles' && (
+          {category === 'Immobilier' && (
             <MeublesForm formData={formData} handleInputChange={handleInputChange} />
           )}
-          {category === 'Vehicules' && (
+          {category === 'Automobile' && (
             <VehiculesForm formData={formData} handleInputChange={handleInputChange} />
           )}
 

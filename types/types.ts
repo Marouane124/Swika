@@ -27,8 +27,11 @@ export interface Immobilier {
 }
 
 export interface VehiculeAttributes {
-  model: string;
-  year: number;
+  type: string;
+  modele: string;
+  marque: string;
+  annee: number;
+  kilometrage: string;
   photo: {
     data: ImageData[];
   };
@@ -38,7 +41,7 @@ export interface Vehicule {
   data: {
     id: number;
     attributes: VehiculeAttributes;
-  } | null;
+  };
 }
 
 export interface UserAttributes {
