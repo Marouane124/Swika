@@ -80,7 +80,7 @@ const AnnonceCard = ({ annonce }: { annonce: AnnonceAttributes }) => {
           <p className="text-gray-700 mb-2 line-clamp-3">{annonce.description}</p>
         </div>
         <div>
-          <p className="text-gray-500 mb-2">Location: {annonce.location}</p>
+          <p className="text-gray-500 mb-2">ville: {annonce.ville}</p>
           <p className="text-gray-900 text-lg mb-4">Prix: {annonce.price ? `${annonce.price} DH` : 'Non spécifié'}</p>
           <button className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 w-full">
             Voir les détails

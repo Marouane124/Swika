@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -36,6 +38,8 @@ const Navbar: React.FC = () => {
     };
   }, [menuOpen]);
 
+  const profileImage = session?.user?.image || '/Default_avatar_profile.jpg';
+
   return (
     <nav className="bg-white shadow-md fixed top-0 left-0 right-0 z-50 py-2 px-4">
       <div className="mx-auto flex justify-between items-center" style={{ maxWidth: '1200px', width: '100%' }}>
@@ -46,20 +50,20 @@ const Navbar: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-4">
-          <Link href="/formulaireAnnonce" className="bg-[#FF471C] text-white px-4 py-2 rounded hover:bg-orange-600 flex items-center">
+          <Link href="/creer-annonce" className="bg-[#FF471C] text-white px-4 py-2 rounded hover:bg-orange-600 flex items-center">
             <AddIcon className="mr-2" />
             Déposer une annonce
           </Link>
 
           {isAuthenticated ? (
             <>
-              <Link href="/mes-annonces" className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
+              <Link href="/compte/mes-annonces" className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
                 Mes annonces
               </Link>
               <div className="relative">
                 <button onClick={toggleMenu} className="text-orange-500 focus:outline-none flex items-center">
                   <Image
-                    src={session?.user?.image || '/Default_avatar_profile.jpg'}
+                    src={profileImage}
                     alt="User Avatar"
                     width={40}
                     height={40}

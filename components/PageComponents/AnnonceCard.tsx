@@ -91,6 +91,7 @@ const AnnonceCard = ({ annonce, id }: { annonce: AnnonceAttributes, id: number }
           height={200}
           src={imageUrl}
           alt={annonce.title}
+          priority={true}
           className="w-full h-48 object-cover"
         />
       </div>
@@ -106,9 +107,9 @@ const AnnonceCard = ({ annonce, id }: { annonce: AnnonceAttributes, id: number }
         <div className="flex justify-between items-center mt-4">
           <p className="text-gray-600 text-sm flex items-center">
             <LocationOnIcon className="mr-2" />
-            {annonce.location}
+            {annonce.ville}
           </p>
-          <Link href={`/detailAnnonce/${id}`}>
+          <Link href={`/annonce/${id}`}>
             <button className="py-2 px-4 bg-orange-500 text-white rounded-full text-sm">
               Voir les détails
             </button>

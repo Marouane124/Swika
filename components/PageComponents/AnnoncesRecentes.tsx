@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchAnnoncesByCategory } from "@/actions/fetchAnnoncesByCategory";
+import { fetchAnnoncesByCategory } from "@/actions/annonce-actions";
 import { Annonce } from "@/types/types";
 import AnnonceCard from "@/components/PageComponents/AnnonceCard";
 import Loading from "@/components/Loading";
@@ -49,7 +49,7 @@ const AnnonceRecentes: React.FC = () => {
   }, [selectedCategory]);
 
   return (
-    <div className="px-8 py-16 bg-gray-100">
+    <div className="px-8 py-10 bg-white">
       <div className="flex justify-center mb-8">
         <div className="relative inline-block">
           <h2 className="text-3xl font-bold text-black relative z-10">

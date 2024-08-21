@@ -6,7 +6,6 @@ import HeroSectionBg from '@/public/HeroSectionBg.png';
 const HeroSection = () => {
   return (
     <div className="flex justify-between items-center py-8 px-4 bg-white relative mt-10">
-      {/* Left side: Text content */}
       <div className="flex flex-col max-w-md ml-16">
         <h1 className="text-6xl font-extrabold leading-tight text-black font-sans">
           ALL <br />
@@ -25,7 +24,7 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Right side: Image with dotted background */}
+      {/* Grille en pointillés */}
       <div className="relative mr-16">
         <div className="absolute -top-6 -left-8 w-20 h-32 grid grid-cols-4 grid-rows-7 gap-2 mt-3">
           {[...Array(28)].map((_, i) => (

@@ -142,7 +142,7 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({
                 type="text"
                 id="location"
                 name="location"
-                value={formData.location}
+                value={formData.ville}
                 onChange={handleInputChange}
                 required
                 className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

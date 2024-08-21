@@ -53,14 +53,22 @@ export interface UserAttributes {
   createdAt: string;
   updatedAt: string;
   phone: string;
+  image?: ImageData; 
 }
 
 export interface User {
-  data: {
-    id: number;
-    attributes: UserAttributes;
-  };
+  id: number;
+  username: string;
+  email: string;
+  provider: string;
+  confirmed: boolean;
+  blocked: boolean;
+  createdAt: string;
+  updatedAt: string;
+  phone: string | null;
+  image?: ImageData;
 }
+
 
 export interface AnnonceAttributes {
   id: number;
@@ -71,9 +79,11 @@ export interface AnnonceAttributes {
   updatedAt: string;
   publishedAt: string;
   category: string;
-  location: string;
+  ville: string;
   immobilier?: Immobilier;
   vehicule?: Vehicule;
+  users_permissions_user: User;
+  Statut: string | null;
 }
 
 export interface Annonce {

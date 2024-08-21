@@ -68,7 +68,7 @@ const DetailAnnonce: React.FC = () => {
     return <div className="min-h-screen bg-white flex items-center justify-center">No annonce found</div>;
   }
 
-  const { title, description, price, location, updatedAt, immobilier, vehicule } = annonce.attributes;
+  const { title, description, price, ville, updatedAt, immobilier, vehicule } = annonce.attributes;
 
   // Access photos based on whether immobilier or vehicule data exists
   const immobilierPhotos = immobilier?.data?.attributes?.photo?.data || [];
@@ -146,7 +146,7 @@ const DetailAnnonce: React.FC = () => {
 
               <p className="text-gray-600 mb-3 flex items-center text-sm bg-white">
                 <LocationOnIcon className="mr-1" />
-                {location || 'N/A'}
+                {ville || 'N/A'}
                 <span className="ml-4 flex items-center text-gray-500 bg-white">
                   <AccessTimeIcon className="mr-1" />
                   {formattedUpdatedAt}

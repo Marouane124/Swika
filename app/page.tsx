@@ -13,6 +13,8 @@ import AnnoncesRecentes from "@/components/PageComponents/AnnoncesRecentes";
 import AnnonceCardOld from "@/components/AnnonceCardOld";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Newsletter from "@/components/PageComponents/Newsletter";
+import PromoCards from "@/components/PageComponents/PromoCards";
+import CityProperties from "@/components/PageComponents/CityProperties";
 
 const Page: React.FC = () => {
   const [annonces, setAnnonces] = useState<Annonce[]>([]);
@@ -70,6 +72,11 @@ const Page: React.FC = () => {
 
       <AnnoncesRecentes />
 
+      <PromoCards />
+      
+      <CityProperties />
+
+{/*
       {loading ? (
         <Loading />
       ) : (
@@ -93,6 +100,7 @@ const Page: React.FC = () => {
           )}
         </div>
       )}
+*/}
 
       <Newsletter />
 
