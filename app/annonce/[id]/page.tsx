@@ -11,6 +11,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Footer from '../../../components/PageComponents/Footer';
 import Nav from '../../../components/PageComponents/Navbar';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Loading from '@/components/Loading'; // Add this import
 
 const DetailAnnonce: React.FC = () => {
   const [annonce, setAnnonce] = useState<Annonce | null>(null);
@@ -57,7 +59,11 @@ const DetailAnnonce: React.FC = () => {
   }, [id]);
 
   if (loading) {
-    return <div className="min-h-screen bg-white flex items-center justify-center text-black">Loading...</div>;
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center text-black">
+        <Loading /> {/* Replace the loading text with the Loading component */}
+      </div>
+    );
   }
 
   if (error) {
@@ -108,8 +114,13 @@ const DetailAnnonce: React.FC = () => {
   const formattedUpdatedAt = getRelativeTime(updatedAt);
 
   return (
-    <div className="min-h-screen bg-gray-200 pt-16">
+    <div className="min-h-screen bg-gray-200 pt-10 bg-white">
       <Nav />
+      <div className="absolute top-16 left-4">
+        <IconButton onClick={() => router.back()} >
+          <ArrowBackIcon sx={{ fontSize: 30 }} />
+        </IconButton>
+      </div>
       <div className="container mx-auto pt-20 pb-12 ">
         <Grid container spacing={2} className="flex-1 mt-10 bg-white">
           <Grid item xs={12} md={4} className="pr-4 bg-white">
@@ -117,9 +128,9 @@ const DetailAnnonce: React.FC = () => {
               <Avatar
                 alt="Large Product Image"
                 src={selectedImage ? `${strapiURL}${selectedImage}` : "https://via.placeholder.com/300?text=No+Image"}
-                className="w-80 h-80 mb-2"
+                className="w-full h-auto mb-2"
                 variant="square"
-                sx={{ width: 400, height: 320, marginLeft: '50px' }}
+                sx={{ width: '100%', height: 'auto', maxWidth: '400px', maxHeight: '320px', marginLeft: 'auto', marginRight: 'auto' }}
               />
               <Box className="flex flex-row overflow-x-auto bg-white">
                 {imageUrls.map((image, index) => (
@@ -131,8 +142,8 @@ const DetailAnnonce: React.FC = () => {
                     <Avatar
                       alt={`Thumbnail ${index + 1}`}
                       src={`${strapiURL}${image}`}
-                      className={`w-16 h-16 ${selectedImage === image ? 'ring-2 ring-purple-600' : ''}`}
-                      sx={{ width: 64, height: 64, border: selectedImage === image ? '2px solid #6b46c1' : 'none' }}
+                      className={`w-16 h-16 ${selectedImage === image ? 'ring-2 ring-[#FF471C]' : ''}`}
+                      sx={{ width: 64, height: 64, border: selectedImage === image ? '2px solid #FF471C' : 'none' }}
                     />
                   </IconButton>
                 ))}
@@ -142,7 +153,7 @@ const DetailAnnonce: React.FC = () => {
 
           <Grid item xs={12} md={8} className="pl-8 bg-white">
             <div className="bg-white p-6 rounded-lg shadow-2xl mb-6">
-              <h1 className="text-4xl font-extrabold text-[#6b46c1] mb-2">{title}</h1>
+              <h1 className="text-4xl font-extrabold text-[#FF471C] mb-2">{title}</h1>
 
               <p className="text-gray-600 mb-3 flex items-center text-sm bg-white">
                 <LocationOnIcon className="mr-1" />
@@ -176,8 +187,10 @@ const DetailAnnonce: React.FC = () => {
 
               {vehicule?.data && (
                 <div className="text-black bg-white">
-                  <p><strong>Model: </strong>{vehicule.data.attributes.modele || 'N/A'}</p>
-                  <p><strong>Year: </strong>{vehicule.data.attributes.annee || 'N/A'}</p>
+                  <p><strong>Marque: </strong>{vehicule.data.attributes.marque || 'N/A'}</p>
+                  <p><strong>Modèle: </strong>{vehicule.data.attributes.modele || 'N/A'}</p>
+                  <p><strong>Année: </strong>{vehicule.data.attributes.annee || 'N/A'}</p>
+                  <p><strong>Kilométrage: </strong>{vehicule.data.attributes.kilometrage || 'N/A'} Km</p>
                 </div>
               )}
             </div>
@@ -185,7 +198,7 @@ const DetailAnnonce: React.FC = () => {
             {/* Align the button to the right with right margin */}
             <div className="flex justify-end">
               <button
-                className="bg-[#6b46c1] text-white px-4 py-2 rounded-lg hover:bg-[#553c9a] mr-8"
+                className="bg-[#FF471C] text-white px-4 py-2 rounded-lg hover:bg-orange-600 mr-8"
               >
                 Contacter le vendeur
               </button>
