@@ -2,7 +2,14 @@ import axios from 'axios';
 import { Annonce } from '@/types/types';
 
 // Fetch a paginated list of annonces
-export const fetchAnnonces = async (page: number, pageSize: number, searchQuery: string = '', userId?: number) => {
+export const fetchAnnonces = async (
+  page: number, 
+  pageSize: number, 
+  searchQuery: string = '', 
+  userId?: number, 
+  ville?: string, 
+  priceRange?: { min: number; max: number }
+) => {
   try {
     const filters: any = {
       title: {
@@ -18,9 +25,21 @@ export const fetchAnnonces = async (page: number, pageSize: number, searchQuery:
       };
     }
 
+    if (ville) {
+      filters.ville = {
+        $eq: ville,
+      };
+    }
+
+    if (priceRange && priceRange.min != null && priceRange.max != null) {
+      filters.price = {
+        $between: [priceRange.min, priceRange.max],
+      };
+    }
+
     const response = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces`, {
       params: {
-        sort: ['updatedAt:desc'],
+        sort: ['createdAt:desc'],
         filters,
         populate: {
           users_permissions_user: true,
@@ -37,7 +56,7 @@ export const fetchAnnonces = async (page: number, pageSize: number, searchQuery:
         },
       },
     });
-    //console.log(response.data);
+
     return response.data;
   } catch (error) {
     console.error('Error fetching annonces:', error);
@@ -165,7 +184,7 @@ export const fetchAnnoncesByCategory = async (category: string): Promise<Annonce
             $eq: "Active",
           },
         },
-        sort: ["updatedAt:desc"],
+        sort: ["createdAt:desc"],
         populate: {
           vehicule: {
             populate: ["photo"],
@@ -180,8 +199,6 @@ export const fetchAnnoncesByCategory = async (category: string): Promise<Annonce
         },
       },
     });
-
-    //console.log(response.data.data);
     return response.data.data.map((annonce: any) => ({
       id: annonce.id,
       attributes: annonce.attributes,
