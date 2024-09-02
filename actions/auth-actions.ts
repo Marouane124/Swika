@@ -23,7 +23,6 @@ export async function registerUserAction(formData: FormData) {
     const data = await response.json();
 
     if (response.ok) {
-      //console.log(data);
       return { success: true, user: data.user };
     } else {
       return { success: false, error: data.error.message };

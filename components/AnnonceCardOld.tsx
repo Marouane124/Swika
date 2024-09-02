@@ -5,7 +5,6 @@ import { AnnonceAttributes } from '@/types/types';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 const AnnonceCard = ({ annonce }: { annonce: AnnonceAttributes }) => {
-  //console.log('Annonce:', annonce);
 
   const immobilierPhotos = annonce.immobilier?.data?.attributes?.photo?.data || [];
   const vehiculePhotos = annonce.vehicule?.data?.attributes?.photo?.data || [];
@@ -13,15 +12,8 @@ const AnnonceCard = ({ annonce }: { annonce: AnnonceAttributes }) => {
   const strapiURL = process.env.NEXT_PUBLIC_STRAPI_URL;
   const immobilierPhotoUrl = immobilierPhotos.length > 0 ? `${strapiURL}${immobilierPhotos[0].attributes.url}` : null;
   const vehiculePhotoUrl = vehiculePhotos.length > 0 ? `${strapiURL}${vehiculePhotos[0].attributes.url}` : null;
-
-  //console.log('Immobilier Photo URL:', immobilierPhotoUrl);
-  //console.log('Vehicule Photo URL:', vehiculePhotoUrl);
-
   const imageUrl = immobilierPhotoUrl || vehiculePhotoUrl || Logo.src;
   const photoCount = immobilierPhotos.length > 0 ? immobilierPhotos.length : vehiculePhotos.length;
-
-  //console.log('Image URL:', imageUrl);
-
   const createdAt = new Date(annonce.createdAt);
   const now = new Date();
 
