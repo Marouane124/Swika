@@ -110,7 +110,6 @@ export const fetchAnnonces = async (
     const response = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces`, {
       params: {
         sort: ['createdAt:desc'],
-        sort: ['createdAt:desc'],
         filters,
         populate: {
           users_permissions_user: true,
@@ -256,7 +255,6 @@ export const fetchAnnoncesByCategory = async (category: string): Promise<Annonce
             $eq: "Active",
           },
         },
-        sort: ["createdAt:desc"],
         sort: ["createdAt:desc"],
         populate: {
           vehicule: {
