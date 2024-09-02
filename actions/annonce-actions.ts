@@ -110,6 +110,7 @@ export const fetchAnnonces = async (
     const response = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces`, {
       params: {
         sort: ['createdAt:desc'],
+        sort: ['createdAt:desc'],
         filters,
         populate: {
           users_permissions_user: true,
@@ -126,6 +127,7 @@ export const fetchAnnonces = async (
         },
       },
     });
+
 
     return response.data;
   } catch (error) {
@@ -255,6 +257,7 @@ export const fetchAnnoncesByCategory = async (category: string): Promise<Annonce
           },
         },
         sort: ["createdAt:desc"],
+        sort: ["createdAt:desc"],
         populate: {
           vehicule: {
             populate: ["photo"],
@@ -269,8 +272,6 @@ export const fetchAnnoncesByCategory = async (category: string): Promise<Annonce
         },
       },
     });
-
-    //console.log(response.data.data);
     return response.data.data.map((annonce: any) => ({
       id: annonce.id,
       attributes: annonce.attributes,

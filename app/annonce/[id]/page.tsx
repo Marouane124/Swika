@@ -164,6 +164,7 @@ const DetailAnnonce: React.FC = () => {
           <Grid item xs={12} md={6} className="pl-8">
             <div className="bg-white p-6 rounded-lg shadow-2xl mb-6">
               <h1 className="text-4xl font-extrabold text-[#FF471C] mb-2">{title}</h1>
+              <h1 className="text-4xl font-extrabold text-[#FF471C] mb-2">{title}</h1>
 
               <p className="text-gray-600 mb-3 flex items-center text-sm">
                 <LocationOnIcon className="mr-1" />
