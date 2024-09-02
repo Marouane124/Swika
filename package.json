@@ -16,7 +16,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mui/icons-material": "^5.16.4",
     "@mui/material": "^5.16.4",
-    "axios": "^1.7.2",
+    "axios": "^1.7.3",
     "framer-motion": "^11.3.13",
     "next": "^14.2.5",
     "next-auth": "^4.24.7",
