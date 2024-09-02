@@ -20,7 +20,7 @@ export function AuthWrapper({ children }: { children: ReactNode }) {
         });
         hasShownToast.current = true; 
       }
-      router.push(`/signin?redirect=${encodeURIComponent(pathname)}`);
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
     }
   }, [isLoading, isAuthenticated, router, pathname]);
 

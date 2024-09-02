@@ -11,10 +11,10 @@ interface AnnonceTableProps {
 const AnnonceTable: React.FC<AnnonceTableProps> = ({ annonces, handleAnnonceClick, handleApprove, handleReject }) => {
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden table-fixed text-sm"> {/* Reduced font size */}
+      <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden table-fixed text-sm">
         <thead className="bg-[#f76545] text-white">
           <tr>
-            <th className="w-1/4 py-2 px-3 text-left">Title</th> {/* Reduced padding */}
+            <th className="w-1/4 py-2 px-3 text-left">Title</th>
             <th className="w-1/5 py-2 px-3 text-left">Category</th>
             <th className="w-1/6 py-2 px-3 text-left">Statut</th>
             <th className="w-1/5 py-2 px-3 text-left">User</th>

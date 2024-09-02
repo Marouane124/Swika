@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { fetchAnnoncesByCategory } from "@/actions/annonce-actions";
 import { Annonce } from "@/types/types";
-import AnnonceCard from "@/components/PageComponents/AnnonceCard";
+import AnnonceCard from "@/components/HomePage/HomeAnnonceCard";
 import Loading from "@/components/Loading";
+import Link from "next/link";
 
 interface CategoriesTabsProps {
   selectedCategory: string;
@@ -63,13 +64,22 @@ const AnnonceRecentes: React.FC = () => {
         <Loading />
       ) : (
         <div className="grid grid-cols-3 gap-8 mx-10 px-10">
-          {annonces.map((annonce, index) => (
-            <AnnonceCard key={index} id={annonce.id} annonce={annonce.attributes} />
+          {annonces.map((annonce) => (
+            <AnnonceCard key={annonce.id} id={annonce.id} annonce={annonce.attributes} />
           ))}
         </div>
       )}
+      <div className="flex justify-center mt-8">
+        <Link
+          href={`/annonces?category=${selectedCategory}`}
+          className="py-2 px-6 bg-orange-500 text-white rounded-full text-sm font-semibold hover:bg-orange-600 transition-transform transform hover:scale-105"
+        >
+          Voir tout
+        </Link>
+      </div>
     </div>
   );
 };
 
 export default AnnonceRecentes;
+  

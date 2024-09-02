@@ -1,6 +1,6 @@
 import React from 'react';
 import ResetPassword from './ResetPassword';
-import SuspenseBoundary from '../../SuspenseBoundary';
+import SuspenseBoundary from '@/components/SuspenseBoundary';
 
 const Page = () => (
   <SuspenseBoundary>

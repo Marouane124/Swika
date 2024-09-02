@@ -79,7 +79,7 @@ const Navbar: React.FC = () => {
               </div>
             </>
           ) : (
-            <Link href="/signin" className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
+            <Link href="/login" className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
               Se connecter
             </Link>
           )}

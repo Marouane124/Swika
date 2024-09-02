@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import MeublesForm from '@/components/Forms/MeublesForm';
 import VehiculesForm from '@/components/Forms/VehiculesForm';
 import Image from 'next/image';
@@ -24,7 +24,7 @@ interface AnnonceFormProps {
   message: string;
 }
 
-const MAX_DESCRIPTION_LENGTH = 280; 
+const MAX_IMAGES = 6;
 
 const AnnonceForm: React.FC<AnnonceFormProps> = ({
   category,
@@ -38,6 +38,7 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({
   message,
 }) => {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [descriptionLength, setDescriptionLength] = useState(formData.description.length);
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -49,24 +50,39 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({
     router.push('/');
   };
 
+  const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedImages = Array.from(e.target.files);
+      if (images.length + selectedImages.length <= MAX_IMAGES) {
+        handleImageChange(e);
+      } else {
+        alert(`You can only add up to ${MAX_IMAGES} images.`);
+      }
+    }
+  };
+
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8 relative">
-        <button className="absolute top-2 left-2 text-gray-500 hover:text-gray-700 pt-1 pl-2">
-          <ArrowBackIcon onClick={handleGoHome} />
-        </button>
-
-        <div className="flex justify-center mb-6">
-          <h1 className="text-black text-2xl font-bold">Créer une annonce</h1>
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Left Side: AnnonceForm */}
+      <div className="flex flex-col w-1/2 bg-white p-8 shadow-md">
+        <div className="flex items-center justify-between mb-6">
+          <button onClick={handleGoHome} className="text-gray-500 hover:text-gray-700">
+            <ArrowBackIcon />
+          </button>
+          <h1 className="text-3xl font-bold text-gray-800 text-center w-full">Créer une annonce</h1>
         </div>
-
         {message && (
           <div className={`mb-4 text-center text-sm ${message.includes('Error') ? 'text-red-500' : 'text-green-500'}`}>
             {message}
           </div>
         )}
-
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="flex-grow flex flex-col">
           <div className="mb-4">
             <label htmlFor="title" className="block text-sm font-medium text-gray-700">
               Titre :
@@ -98,7 +114,7 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({
                 name="description"
                 value={formData.description}
                 onChange={handleDescriptionChange}
-                maxLength={MAX_DESCRIPTION_LENGTH}
+                maxLength={280}
                 required
                 className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-24 resize-none"
                 placeholder="Description de l'annonce"
@@ -107,7 +123,7 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({
                 <DescriptionIcon style={{ color: 'gray' }} />
               </div>
               <div className="absolute bottom-0 left-2 text-xs text-gray-500">
-                {descriptionLength}/{MAX_DESCRIPTION_LENGTH}
+                {descriptionLength}/280
               </div>
             </div>
           </div>
@@ -179,54 +195,50 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({
             </div>
           </div>
 
-          {category === 'Immobilier' && (
-            <MeublesForm formData={formData} handleInputChange={handleInputChange} />
-          )}
-          {category === 'Automobile' && (
-            <VehiculesForm formData={formData} handleInputChange={handleInputChange} />
-          )}
-
           <div className="mb-4">
             <label htmlFor="images" className="block text-sm font-medium text-gray-700">
               Images :
-            </label>
-            <label
-              htmlFor="images"
-              className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline inline-block"
-            >
-              Sélectionner des images
             </label>
             <input
               type="file"
               id="images"
               name="images"
               multiple
-              onChange={handleImageChange}
+              onChange={onImageChange}
+              ref={fileInputRef}
               className="hidden"
             />
-            <div className="mt-2 flex flex-wrap">
-              {images.map((img, idx) => (
-                <div key={idx} className="relative w-20 h-20 m-2">
+            <div className="mt-2 grid grid-cols-3 gap-2">
+              {images.slice(0, MAX_IMAGES).map((img, idx) => (
+                <div key={idx} className="relative w-full h-24">
                   <Image
                     src={URL.createObjectURL(img)}
                     alt={`Image ${idx + 1}`}
-                    width={100}
-                    height={100}
+                    layout="fill"
                     className="object-cover rounded-md"
                   />
                   <button
                     type="button"
                     onClick={() => handleRemoveImage(idx)}
-                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center pb-1"
                   >
                     &times;
                   </button>
                 </div>
               ))}
+              {images.length < MAX_IMAGES && (
+                <div
+                  className="relative w-full h-24 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md text-gray-400 cursor-pointer hover:text-black hover:border-black"
+                  onClick={triggerFileInput}
+                >
+                  <span>+ Ajouter Image</span>
+                </div>
+              )}
             </div>
+            <p className="mt-1 text-sm text-gray-500">{images.length}/{MAX_IMAGES} images séléctionnées</p>
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-center mt-auto">
             <button
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -235,6 +247,34 @@ const AnnonceForm: React.FC<AnnonceFormProps> = ({
             </button>
           </div>
         </form>
+      </div>
+
+      {/* Vertical Line */}
+      <div className="w-px bg-gray-300"></div>
+
+      {/* Right Side: Category-Specific Form or Placeholder */}
+      <div className="w-1/2 flex flex-col justify-start bg-gray-50 p-8">
+        {category ? (
+          <>
+            <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">
+              Saisir les détails
+            </h2>
+            <div className="flex-grow">
+              {category === 'Immobilier' && (
+                <MeublesForm formData={formData} handleInputChange={handleInputChange} />
+              )}
+              {category === 'Automobile' && (
+                <VehiculesForm formData={formData} handleInputChange={handleInputChange} />
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <h2 className="text-2xl font-semibold text-gray-700">
+              Choisissez une catégorie
+            </h2>
+          </div>
+        )}
       </div>
     </div>
   );

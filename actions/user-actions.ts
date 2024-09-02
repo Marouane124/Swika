@@ -7,6 +7,7 @@ export const fetchUsers = async (): Promise<User[]> => {
   try {
     const response = await axios.get(`${BASE_URL}/api/users`);
     const users: User[] = response.data;
+    console.log(users);
     return users;
   } catch (error) {
     console.error('Error fetching users:', error);

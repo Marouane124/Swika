@@ -1,4 +1,7 @@
 import React from 'react';
+import { IconButton } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 interface PaginationProps {
   currentPage: number;
@@ -8,7 +11,13 @@ interface PaginationProps {
   setCurrentPage: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, handleNextPage, handlePreviousPage, setCurrentPage }) => {
+const Pagination: React.FC<PaginationProps> = ({
+  currentPage,
+  totalPages,
+  handleNextPage,
+  handlePreviousPage,
+  setCurrentPage
+}) => {
   const renderPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -52,21 +61,21 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, handle
 
   return (
     <div className="flex justify-center mt-4 text-sm">
-      <button
+      <IconButton
         onClick={handlePreviousPage}
         disabled={currentPage === 1}
-        className="px-4 py-2 mx-1 bg-gray-300 rounded disabled:bg-gray-100 text-sm"
+        className="mx-1"
       >
-        Previous
-      </button>
+        <ArrowBackIcon />
+      </IconButton>
       {renderPageNumbers()}
-      <button
+      <IconButton
         onClick={handleNextPage}
         disabled={currentPage === totalPages}
-        className="px-4 py-2 mx-1 bg-gray-300 rounded disabled:bg-gray-100 text-sm"
+        className="mx-1"
       >
-        Next
-      </button>
+        <ArrowForwardIcon />
+      </IconButton>
     </div>
   );
 };

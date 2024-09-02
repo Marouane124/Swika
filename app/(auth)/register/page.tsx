@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import * as React from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import GoogleSignInButton from '@/components/GoogleButton';
@@ -25,7 +25,7 @@ const signUpSchema = z.object({
   path: ['confirmPassword'],
 });
 
-export default function SignUp() {
+export default function SignUpPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
@@ -109,7 +109,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="flex items-center justify-center my-0">
+    <div className="bg-gray-100 min-h-screen py-5 flex items-center justify-center">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8 relative">
         <button className="absolute top-2 left-2 text-gray-500 hover:text-gray-700 pt-1 pl-2">
           <ArrowBackIcon onClick={handleBackClick} />
@@ -119,7 +119,7 @@ export default function SignUp() {
         </div>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="name" className="block text-sm font-medium text-[#333333]">
               Nom
             </label>
             <div className="mt-1 relative rounded-md shadow-sm">
@@ -127,17 +127,17 @@ export default function SignUp() {
                 type="text"
                 name="name"
                 id="name"
-                className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-[#FF6F3C] focus:border-[#FF6F3C] sm:text-sm"
                 placeholder="Votre nom"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <PersonIcon style={{ color: 'black' }} />
+                <PersonIcon style={{ color: '#333333' }} />
               </div>
             </div>
             {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
           </div>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="block text-sm font-medium text-[#333333]">
               E-mail
             </label>
             <div className="mt-1 relative rounded-md shadow-sm">
@@ -145,17 +145,17 @@ export default function SignUp() {
                 type="email"
                 name="email"
                 id="email"
-                className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-[#FF6F3C] focus:border-[#FF6F3C] sm:text-sm"
                 placeholder="Votre email"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <MailOutlineIcon style={{ color: 'black' }} />
+                <MailOutlineIcon style={{ color: '#333333' }} />
               </div>
             </div>
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors?.email}</p>}
           </div>
           <div className="mb-4">
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="phone" className="block text-sm font-medium text-[#333333]">
               Téléphone
             </label>
             <div className="mt-1 relative rounded-md shadow-sm">
@@ -163,17 +163,17 @@ export default function SignUp() {
                 type="tel"
                 name="phone"
                 id="phone"
-                className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-[#FF6F3C] focus:border-[#FF6F3C] sm:text-sm"
                 placeholder="Votre numéro de téléphone"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <PhoneIcon style={{ color: 'black' }} />
+                <PhoneIcon style={{ color: '#333333' }} />
               </div>
             </div>
             {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium text-[#333333]">
               Mot de passe
             </label>
             <div className="mt-1 relative rounded-md shadow-sm">
@@ -181,27 +181,27 @@ export default function SignUp() {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 id="password"
-                className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-[#FF6F3C] focus:border-[#FF6F3C] sm:text-sm"
                 placeholder="Votre mot de passe"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <LockIcon style={{ color: 'black' }} />
+                <LockIcon style={{ color: '#333333' }} />
               </div>
               <div
                 className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
                 onClick={toggleShowPassword}
               >
                 {showPassword ? (
-                  <VisibilityOffIcon style={{ color: 'black' }} />
+                  <VisibilityOffIcon style={{ color: '#333333' }} />
                 ) : (
-                  <VisibilityIcon style={{ color: 'black' }} />
+                  <VisibilityIcon style={{ color: '#333333' }} />
                 )}
               </div>
             </div>
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
           <div className="mb-6">
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-[#333333]">
               Confirmer le mot de passe
             </label>
             <div className="mt-1 relative rounded-md shadow-sm">
@@ -209,20 +209,20 @@ export default function SignUp() {
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 id="confirmPassword"
-                className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-[#FF6F3C] focus:border-[#FF6F3C] sm:text-sm"
                 placeholder="Confirmer le mot de passe"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <LockIcon style={{ color: 'black' }} />
+                <LockIcon style={{ color: '#333333' }} />
               </div>
               <div
                 className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
                 onClick={toggleShowConfirmPassword}
               >
                 {showConfirmPassword ? (
-                  <VisibilityOffIcon style={{ color: 'black' }} />
+                  <VisibilityOffIcon style={{ color: '#333333' }} />
                 ) : (
-                  <VisibilityIcon style={{ color: 'black' }} />
+                  <VisibilityIcon style={{ color: '#333333' }} />
                 )}
               </div>
             </div>
@@ -231,7 +231,7 @@ export default function SignUp() {
           <div>
             <button
               type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#FF471C] hover:bg-[#FF6F3C] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6F3C]"
             >
               Créer un compte
             </button>

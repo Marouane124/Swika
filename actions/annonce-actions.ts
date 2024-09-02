@@ -1,14 +1,55 @@
 import axios from 'axios';
 import { Annonce } from '@/types/types';
 
+// Fetch the details of a single annonce by ID
+export const fetchAnnonceById = async (id: number): Promise<Annonce | null> => {
+  try {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces/${id}`, {
+      params: {
+        populate: {
+          users_permissions_user: true,
+          vehicule: {
+            populate: ['photo'],
+          },
+          immobilier: {
+            populate: ['photo'],
+          },
+        },
+      },
+    });
+
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching annonce by ID:', error);
+    return null;
+  }
+};
+
 // Fetch a paginated list of annonces
-export const fetchAnnonces = async (page: number, pageSize: number, searchQuery: string = '', userId?: number) => {
+export const fetchAnnonces = async (
+  page: number,
+  pageSize: number,
+  searchQuery: string = '',
+  userId?: number,
+  ville?: string,
+  priceRange?: { min: number; max: number },
+  category?: string,
+  immobilierFilters?: { chambre?: number; salon?: number; toilette?: number; surface?: number },
+  vehiculeFilters?: { modele?: string; marque?: string; annee?: number; kilometrage?: number },
+  status?: string 
+) => {
   try {
     const filters: any = {
       title: {
         $containsi: searchQuery,
       },
     };
+
+    if (status) {
+      filters.Statut = {
+        $eq: status, // Apply the status filter if provided
+      };
+    }
 
     if (userId) {
       filters.users_permissions_user = {
@@ -18,9 +59,57 @@ export const fetchAnnonces = async (page: number, pageSize: number, searchQuery:
       };
     }
 
+    if (ville) {
+      filters.ville = {
+        $eq: ville,
+      };
+    }
+
+    if (priceRange && priceRange.min != null && priceRange.max != null) {
+      filters.price = {
+        $between: [priceRange.min, priceRange.max],
+      };
+    }
+
+    if (category) {
+      filters.category = {
+        $eq: category,
+      };
+
+      if (category === 'Immobilier' && immobilierFilters) {
+        if (immobilierFilters.chambre != null) {
+          filters['immobilier.chambre'] = { $eq: immobilierFilters.chambre };
+        }
+        if (immobilierFilters.salon != null) {
+          filters['immobilier.salon'] = { $eq: immobilierFilters.salon };
+        }
+        if (immobilierFilters.toilette != null) {
+          filters['immobilier.toilette'] = { $eq: immobilierFilters.toilette };
+        }
+        if (immobilierFilters.surface != null) {
+          filters['immobilier.surface'] = { $gte: immobilierFilters.surface }; // Example: filter by minimum surface
+        }
+      }
+
+      if (category === 'Automobile' && vehiculeFilters) {
+        if (vehiculeFilters.modele) {
+          filters['vehicule.modele'] = { $containsi: vehiculeFilters.modele };
+        }
+        if (vehiculeFilters.marque) {
+          filters['vehicule.marque'] = { $containsi: vehiculeFilters.marque };
+        }
+        if (vehiculeFilters.annee != null) {
+          filters['vehicule.annee'] = { $eq: vehiculeFilters.annee };
+        }
+        if (vehiculeFilters.kilometrage != null) {
+          filters['vehicule.kilometrage'] = { $lte: vehiculeFilters.kilometrage }; // Example: filter by maximum kilometrage
+        }
+      }
+    }
+
     const response = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces`, {
       params: {
-        sort: ['updatedAt:desc'],
+        sort: ['createdAt:desc'],
         filters,
         populate: {
           users_permissions_user: true,
@@ -32,12 +121,12 @@ export const fetchAnnonces = async (page: number, pageSize: number, searchQuery:
           },
         },
         pagination: {
-          page,
-          pageSize,
+          page, 
+          pageSize, 
         },
       },
     });
-    //console.log(response.data);
+
     return response.data;
   } catch (error) {
     console.error('Error fetching annonces:', error);
@@ -165,7 +254,7 @@ export const fetchAnnoncesByCategory = async (category: string): Promise<Annonce
             $eq: "Active",
           },
         },
-        sort: ["updatedAt:desc"],
+        sort: ["createdAt:desc"],
         populate: {
           vehicule: {
             populate: ["photo"],
@@ -188,6 +277,56 @@ export const fetchAnnoncesByCategory = async (category: string): Promise<Annonce
     }));
   } catch (error) {
     console.error("Error fetching filtered annonces:", error);
+    return [];
+  }
+};
+
+// Fetch similar annonces based on the category
+export const fetchSimilarAnnonces = async (category: string, title: string): Promise<Annonce[]> => {
+  try {
+    const keywords = title.split(' ').filter((word) => word.length > 3); // Filter out short words
+
+    const titleFilters = keywords.map((keyword) => ({
+      title: {
+        $containsi: keyword, 
+      },
+    }));
+
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces`, {
+      params: {
+        filters: {
+          category: {
+            $eq: category,
+          },
+          $or: titleFilters, 
+          Statut: {
+            $eq: "Active",
+          },
+        },
+        sort: ["createdAt:desc"],
+        populate: {
+          vehicule: {
+            populate: ["photo"],
+          },
+          immobilier: {
+            populate: ["photo"],
+          },
+        },
+        pagination: {
+          start: 0,
+          limit: 8,
+        },
+      },
+    });
+
+    return response.data.data
+      .filter((annonce: any) => annonce.attributes.title !== title) 
+      .map((annonce: any) => ({
+        id: annonce.id,
+        attributes: annonce.attributes,
+      }));
+  } catch (error) {
+    console.error("Error fetching similar annonces:", error);
     return [];
   }
 };

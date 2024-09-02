@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import Navbar from '@/components/PageComponents/Navbar';
+import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Admin/Sidebar';
 
 interface AdminLayoutProps {

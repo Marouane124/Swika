@@ -1,20 +1,20 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Navbar from "@/components/PageComponents/Navbar";
-import Footer from "@/components/PageComponents/Footer";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import Loading from "@/components/Loading";
 import { Annonce } from "@/types/types";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import HeroSection from "@/components/PageComponents/HeroSection";
-import CategoriesSection from "@/components/PageComponents/CategoriesSection";
-import AnnoncesRecentes from "@/components/PageComponents/AnnoncesRecentes";
+import HeroSection from "@/components/HomePage/HeroSection";
+import CategoriesSection from "@/components/HomePage/CategoriesSection";
+import AnnoncesRecentes from "@/components/HomePage/AnnoncesRecentes";
 import AnnonceCardOld from "@/components/AnnonceCardOld";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import Newsletter from "@/components/PageComponents/Newsletter";
-import PromoCards from "@/components/PageComponents/PromoCards";
-import CityProperties from "@/components/PageComponents/CityProperties";
+import Newsletter from "@/components/HomePage/Newsletter";
+import PromoCards from "@/components/HomePage/PromoCards";
+import CityProperties from "@/components/HomePage/CityProperties";
 
 const Page: React.FC = () => {
   const [annonces, setAnnonces] = useState<Annonce[]>([]);
@@ -30,7 +30,7 @@ const Page: React.FC = () => {
           `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces`,
           {
             params: {
-              sort: ["updatedAt:desc"],
+              sort: ["createdAt:desc"],
               populate: {
                 immobilier: {
                   populate: ["photo"],

@@ -45,7 +45,7 @@ export default function ResetPassword() {
 
       if (response.ok) {
         toast.success('Mot de passe réinitialisé avec succès.');
-        router.push('/signin');
+        router.push('/login');
       } else {
         toast.error(data.error.message || 'Une erreur est survenue.');
       }

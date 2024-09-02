@@ -37,13 +37,17 @@ const AnnoncePage: React.FC = () => {
   };
 
   useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  useEffect(() => {
     loadAnnonces(currentPage, searchQuery);
   }, [currentPage, searchQuery]);
 
   const handleApprove = async (id: number) => {
     try {
       await updateAnnonceStatus(id, 'Active');
-      setAnnonces(annonces.map((annonce) => (annonce.id === id ? { ...annonce, attributes: { ...annonce.attributes, Statut: 'Active' } } : annonce)));
+      setAnnonces(annonces.map((annonce) => (annonce.id === id ? { ...annonce, attributes: { ...annonce.attributes, statut: 'Active' } } : annonce)));
     } catch (error) {
       console.error('Error approving annonce:', error);
     }
@@ -52,7 +56,7 @@ const AnnoncePage: React.FC = () => {
   const handleReject = async (id: number) => {
     try {
       await updateAnnonceStatus(id, 'Rejetée');
-      setAnnonces(annonces.map((annonce) => (annonce.id === id ? { ...annonce, attributes: { ...annonce.attributes, Statut: 'Rejetée' } } : annonce)));
+      setAnnonces(annonces.map((annonce) => (annonce.id === id ? { ...annonce, attributes: { ...annonce.attributes, statut: 'Rejetée' } } : annonce)));
     } catch (error) {
       console.error('Error rejecting annonce:', error);
     }
