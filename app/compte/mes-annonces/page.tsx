@@ -5,13 +5,14 @@ import { useSession } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Loading from "@/components/Loading";
-import { fetchAnnonces } from "@/actions/annonce-actions";
+import { fetchAnnonces, deleteAnnonce } from "@/actions/annonce-actions";
 import { Annonce } from "@/types/types";
 import UserFilterControls from "@/components/User/UserFilterControls";
 import Pagination from "@/components/Admin/Annonces/Pagination";
 import UserCard from "@/components/User/UserCard";
 import Link from "next/link";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
+import toast from "react-hot-toast";
 
 const MesAnnonces: React.FC = () => {
   const { data: session } = useSession();
@@ -122,9 +123,13 @@ const MesAnnonces: React.FC = () => {
   const strapiURL = process.env.NEXT_PUBLIC_STRAPI_URL as string;
 
   const handleDelete = async (id: number) => {
+    const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette annonce ?");
+    if (!confirmDelete) return;
+
     try {
-      console.log(`Deleting annonce with id: ${id}`);
+      await deleteAnnonce(id); 
       setAnnonces((prevAnnonces) => prevAnnonces.filter((annonce) => annonce.id !== id));
+      toast.success("Annonce supprimé avec succès !");
     } catch (error) {
       console.error("Error deleting annonce:", error);
     }

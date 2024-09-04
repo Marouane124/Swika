@@ -520,6 +520,7 @@ export const updateAnnonceStatut = async (id: number, statut: string): Promise<a
   }
 };
 
+// Fetch latest 100 annonces
 export const fetchLatestAnnonces = async () => {
   try {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces`, {
@@ -534,5 +535,53 @@ export const fetchLatestAnnonces = async () => {
   } catch (error) {
     console.error('Error fetching latest annonces:', error);
     throw error;
+  }
+};
+
+//Delete annonce and related data
+export const deleteAnnonce = async (id: number): Promise<void> => {
+  try {
+    const { data: annonce } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces/${id}?populate=*`);
+
+    const relatedIds: { immobilier?: number; vehicule?: number; objet?: number; materiel?: number; fourre_tout?: number } = {};
+
+    if (annonce.data.attributes.immobilier?.data) {
+      relatedIds.immobilier = annonce.data.attributes.immobilier.data.id;
+    }
+    if (annonce.data.attributes.vehicule?.data) {
+      relatedIds.vehicule = annonce.data.attributes.vehicule.data.id;
+    }
+    if (annonce.data.attributes.objet?.data) {
+      relatedIds.objet = annonce.data.attributes.objet.data.id;
+    }
+    if (annonce.data.attributes.materiel?.data) {
+      relatedIds.materiel = annonce.data.attributes.materiel.data.id;
+    }
+    if (annonce.data.attributes.fourre_tout?.data) {
+      relatedIds.fourre_tout = annonce.data.attributes.fourre_tout.data.id;
+    }
+
+    if (relatedIds.immobilier) {
+      await axios.delete(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/immobiliers/${relatedIds.immobilier}`);
+    }
+    if (relatedIds.vehicule) {
+      await axios.delete(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/vehicules/${relatedIds.vehicule}`);
+    }
+    if (relatedIds.objet) {
+      await axios.delete(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/objets/${relatedIds.objet}`);
+    }
+    if (relatedIds.materiel) {
+      await axios.delete(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/materiels/${relatedIds.materiel}`);
+    }
+    if (relatedIds.fourre_tout) {
+      await axios.delete(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/fourre-touts/${relatedIds.fourre_tout}`);
+    }
+
+    await axios.delete(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/annonces/${id}`);
+
+    console.log(`L'annonce avec l'ID ${id} et toutes les données associées ont été supprimées avec succès.`);
+  } catch (error) {
+    console.error(`Erreur lors de la suppression de l'annonce avec l'ID ${id} :`, error);
+    throw new Error("Échec de la suppression de l'annonce et des données associées.");
   }
 };
