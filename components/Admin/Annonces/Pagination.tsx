@@ -18,6 +18,10 @@ const Pagination: React.FC<PaginationProps> = ({
   handlePreviousPage,
   setCurrentPage
 }) => {
+  const scrollToTop = (behavior: ScrollBehavior = 'auto') => {
+    window.scrollTo({ top: 0, behavior });
+  };
+
   const renderPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -46,7 +50,10 @@ const Pagination: React.FC<PaginationProps> = ({
       typeof page === 'number' ? (
         <button
           key={index}
-          onClick={() => setCurrentPage(page)}
+          onClick={() => {
+            setCurrentPage(page);
+            scrollToTop();
+          }}
           className={`px-3 py-1 mx-1 text-sm rounded ${currentPage === page ? 'bg-yellow-400' : 'bg-gray-200'}`}
         >
           {page}
@@ -62,7 +69,10 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className="flex justify-center mt-4 text-sm">
       <IconButton
-        onClick={handlePreviousPage}
+        onClick={() => {
+          handlePreviousPage();
+          scrollToTop(); 
+        }}
         disabled={currentPage === 1}
         className="mx-1"
       >
@@ -70,7 +80,10 @@ const Pagination: React.FC<PaginationProps> = ({
       </IconButton>
       {renderPageNumbers()}
       <IconButton
-        onClick={handleNextPage}
+        onClick={() => {
+          handleNextPage();
+          scrollToTop(); 
+        }}
         disabled={currentPage === totalPages}
         className="mx-1"
       >

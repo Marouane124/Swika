@@ -1,0 +1,14 @@
+categorie:
+  - Meuble
+  - Électronique
+  - Vêtement
+
+marque:
+  - IKEA
+  - Samsung
+  - Nike
+  
+taille:
+  - Small
+  - Medium
+  - Large

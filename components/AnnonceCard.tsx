@@ -7,6 +7,9 @@ import Image from "next/image";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import HomeIcon from "@mui/icons-material/Home";
+import BuildIcon from "@mui/icons-material/Build";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Logo from "@/public/Logo.png";
 import Tooltip from "@mui/material/Tooltip";
@@ -17,16 +20,25 @@ interface AnnonceCardProps {
 }
 
 const AnnonceCard: React.FC<AnnonceCardProps> = ({ annonce, strapiURL }) => {
+  // Load images based on the category
   const immobilierPhotos = annonce.attributes.immobilier?.data?.attributes?.photo?.data || [];
   const vehiculePhotos = annonce.attributes.vehicule?.data?.attributes?.photo?.data || [];
+  const objetPhotos = annonce.attributes.objet?.data?.attributes?.photo?.data || [];
+  const materielPhotos = annonce.attributes.materiel?.data?.attributes?.photo?.data || [];
+  const fourreToutPhotos = annonce.attributes.fourre_tout?.data?.attributes?.photo?.data || [];
 
   const immobilierPhotoUrl = immobilierPhotos.length > 0 ? `${strapiURL}${immobilierPhotos[0].attributes.url}` : null;
   const vehiculePhotoUrl = vehiculePhotos.length > 0 ? `${strapiURL}${vehiculePhotos[0].attributes.url}` : null;
+  const objetPhotoUrl = objetPhotos.length > 0 ? `${strapiURL}${objetPhotos[0].attributes.url}` : null;
+  const materielPhotoUrl = materielPhotos.length > 0 ? `${strapiURL}${materielPhotos[0].attributes.url}` : null;
+  const fourreToutPhotoUrl = fourreToutPhotos.length > 0 ? `${strapiURL}${fourreToutPhotos[0].attributes.url}` : null;
 
-  const imageUrl = immobilierPhotoUrl || vehiculePhotoUrl || Logo;
-  const photoCount = immobilierPhotos.length > 0 ? immobilierPhotos.length : vehiculePhotos.length;
+  const imageUrl =
+    immobilierPhotoUrl || vehiculePhotoUrl || objetPhotoUrl || materielPhotoUrl || fourreToutPhotoUrl || Logo;
 
-  // Date logic
+  const photoCount =
+    immobilierPhotos.length + vehiculePhotos.length + objetPhotos.length + materielPhotos.length + fourreToutPhotos.length;
+
   const createdAt = new Date(annonce.attributes.createdAt);
   const now = new Date();
 
@@ -60,24 +72,64 @@ const AnnonceCard: React.FC<AnnonceCardProps> = ({ annonce, strapiURL }) => {
       });
 
   const renderCategorySpecificInfo = () => {
-    if (annonce.attributes.category === "Automobile" && annonce.attributes.vehicule?.data) {
-      const { marque, modele } = annonce.attributes.vehicule.data.attributes || {};
-      return (
-        <p className="text-gray-600 text-sm flex items-center">
-          <DirectionsCarIcon className="mr-1" />
-          {`${marque || "Marque inconnue"} - ${modele || "Modèle inconnu"}`}
-        </p>
-      );
-    } else if (annonce.attributes.category === "Immobilier" && annonce.attributes.immobilier?.data) {
-      const { type, surface } = annonce.attributes.immobilier.data.attributes || {};
-      return (
-        <p className="text-gray-600 text-sm flex items-center">
-          <HomeIcon className="mr-1" />
-          {`${type || "Type inconnu"}, ${surface || 0} m²`}
-        </p>
-      );
-    } else {
-      return null;
+    switch (annonce.attributes.category) {
+      case "Automobile":
+        if (annonce.attributes.vehicule?.data) {
+          const { marque, modele } = annonce.attributes.vehicule.data.attributes || {};
+          return (
+            <p className="text-gray-600 text-sm flex items-center">
+              <DirectionsCarIcon className="mr-1" />
+              {`${marque || "Marque inconnue"} - ${modele || "Modèle inconnu"}`}
+            </p>
+          );
+        }
+        break;
+      case "Immobilier":
+        if (annonce.attributes.immobilier?.data) {
+          const { type, surface } = annonce.attributes.immobilier.data.attributes || {};
+          return (
+            <p className="text-gray-600 text-sm flex items-center">
+              <HomeIcon className="mr-1" />
+              {`${type || "Type inconnu"}, ${surface || 0} m²`}
+            </p>
+          );
+        }
+        break;
+      case "Vêtement-Objet":
+        if (annonce.attributes.objet?.data) {
+          const { categorie, taille, marque } = annonce.attributes.objet.data.attributes || {};
+          return (
+            <p className="text-gray-600 text-sm flex items-center">
+              <LocalMallIcon className="mr-1" />
+              {`${categorie || "Catégorie inconnue"}, Taille: ${taille || "Inconnue"}, Marque: ${marque || "Inconnue"}`}
+            </p>
+          );
+        }
+        break;
+      case "Matériel":
+        if (annonce.attributes.materiel?.data) {
+          const { type, marque } = annonce.attributes.materiel.data.attributes || {};
+          return (
+            <p className="text-gray-600 text-sm flex items-center">
+              <BuildIcon className="mr-1" />
+              {`${type || "Type inconnu"}, Marque: ${marque || "Inconnue"}`}
+            </p>
+          );
+        }
+        break;
+      case "Fourre-tout":
+        if (annonce.attributes.fourre_tout?.data) {
+          const { categorie } = annonce.attributes.fourre_tout.data.attributes || {};
+          return (
+            <p className="text-gray-600 text-sm flex items-center">
+              <ListAltIcon className="mr-1" />
+              {`${categorie || "Catégorie inconnue"}`}
+            </p>
+          );
+        }
+        break;
+      default:
+        return <p className="text-gray-600 text-sm">Il n&apos;y a pas de détails pour cette annonce.</p>;
     }
   };
 

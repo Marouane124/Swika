@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { TextField, Select, MenuItem, IconButton, FormControl, InputLabel } from '@mui/material';
+import { Close, Search } from '@mui/icons-material';
 
 interface FilterControlsProps {
   searchQuery: string;
@@ -7,6 +9,7 @@ interface FilterControlsProps {
   setSelectedCategory: (category: string | null) => void;
   selectedStatut: string | null;
   setSelectedStatut: (statut: string | null) => void;
+  handleSearchSubmit: () => void; // Callback to trigger search
 }
 
 const FilterControls: React.FC<FilterControlsProps> = ({
@@ -16,51 +19,87 @@ const FilterControls: React.FC<FilterControlsProps> = ({
   setSelectedCategory,
   selectedStatut,
   setSelectedStatut,
+  handleSearchSubmit,
 }) => {
+  const [tempSearchQuery, setTempSearchQuery] = useState(searchQuery);
+
+  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTempSearchQuery(event.target.value);
+  };
+
+  const triggerSearch = () => {
+    setSearchQuery(tempSearchQuery);
+    handleSearchSubmit();
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") {
+      triggerSearch();
+    }
+  };
+
   return (
     <div className="flex justify-between mb-5 text-sm">
-      <div className="relative">
-        <input
-          type="text"
-          placeholder="Rechercher par titre..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="py-1.5 px-3 border rounded-lg bg-white text-black pr-8"
-        />
-        {searchQuery && (
-          <button
-            onClick={() => setSearchQuery('')}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-black"
-          >
-            ✕
-          </button>
-        )}
-      </div>
-      <div className="flex space-x-2">
-        <select
-          className="py-1.5 px-3 border rounded-lg bg-white text-black"
-          value={selectedCategory || ''}
-          onChange={(e) => setSelectedCategory(e.target.value || null)}
-        >
-          <option value="">Toutes les catégories</option>
-          <option value="Automobile">Automobile</option>
-          <option value="Immobilier">Immobilier</option>
-          <option value="Vente d'occasion">Vente d&apos;occasion</option>
-          <option value="Fourre-tout">Fourre-tout</option>
-        </select>
+      {/* Search by Title */}
+      <TextField
+        variant="outlined"
+        placeholder="Rechercher par titre..."
+        value={tempSearchQuery}
+        onChange={handleSearchInputChange}
+        onKeyDown={handleKeyDown}
+        sx={{ width: '20%', backgroundColor: '#fff' }}
+        InputProps={{
+          endAdornment: (
+            <>
+              {tempSearchQuery && (
+                <IconButton onClick={() => setTempSearchQuery('')}>
+                  <Close />
+                </IconButton>
+              )}
+              <IconButton onClick={triggerSearch}>
+                <Search />
+              </IconButton>
+            </>
+          ),
+        }}
+      />
 
-        <select
-          className="py-1.5 px-3 border rounded-lg bg-white text-black"
-          value={selectedStatut || ''}
-          onChange={(e) => setSelectedStatut(e.target.value || null)}
-        >
-          <option value="">Tous les statuts</option>
-          <option value="Active">Active</option>
-          <option value="Dans la modération">Dans la modération</option>
-          <option value="Rejetée">Rejetée</option>
-          <option value="Désactivée">Désactivée</option>
-          <option value="Supprimées">Supprimées</option>
-        </select>
+      <div className="flex space-x-2">
+        {/* Filter by Category */}
+        <FormControl variant="outlined" sx={{ minWidth: 150, backgroundColor: '#fff' }}>
+          <InputLabel>Catégorie</InputLabel>
+          <Select
+            value={selectedCategory || ''}
+            onChange={(e) => setSelectedCategory(e.target.value || null)}
+            label="Catégorie"
+            MenuProps={{ disableScrollLock: true }}
+          >
+            <MenuItem value="">Toutes les catégories</MenuItem>
+            <MenuItem value="Automobile">Automobile</MenuItem>
+            <MenuItem value="Immobilier">Immobilier</MenuItem>
+            <MenuItem value="Vêtement-Objet">Vêtements et objets de la maison</MenuItem>
+            <MenuItem value="Matériel">Location de matériels</MenuItem>
+            <MenuItem value="Fourre-tout">Fourre-tout</MenuItem>
+          </Select>
+        </FormControl>
+
+        {/* Filter by Statut */}
+        <FormControl variant="outlined" sx={{ minWidth: 150, backgroundColor: '#fff' }}>
+          <InputLabel>Statut</InputLabel>
+          <Select
+            value={selectedStatut || ''}
+            onChange={(e) => setSelectedStatut(e.target.value || null)}
+            label="Statut"
+            MenuProps={{ disableScrollLock: true }}
+          >
+            <MenuItem value="">Tous les statuts</MenuItem>
+            <MenuItem value="Active">Active</MenuItem>
+            <MenuItem value="Dans la modération">Dans la modération</MenuItem>
+            <MenuItem value="Rejetée">Rejetée</MenuItem>
+            <MenuItem value="Désactivée">Désactivée</MenuItem>
+            <MenuItem value="Supprimées">Supprimées</MenuItem>
+          </Select>
+        </FormControl>
       </div>
     </div>
   );

@@ -1,0 +1,275 @@
+type:
+  - Vélos
+  - Voitures
+  - Motos
+  - Camions
+  - Autres
+
+marque:
+  MG:
+    modele:
+      - ZS
+      - HS
+      - MG3
+      - MG5
+      - MG6
+      - MG RX5
+      - MG Hector
+      - MG Hector Plus
+      - MG Gloster
+      - MG One
+      - MG Marvel R
+      - MG Cyberster
+      - MG Extender
+  Alfa Romeo:
+    modele:
+      - Giulia
+      - Stelvio
+      - Tonale
+      - Giulietta
+      - MiTo
+      - 4C
+      - Brera
+      - Spider
+      - GTV
+      - 159
+      - 166
+      - SZ
+      - 8C Competizione
+  Chevrolet:
+    modele:
+      - Camaro
+      - Malibu
+      - Tahoe
+      - Suburban
+      - Silverado
+      - Corvette
+      - Impala
+      - Traverse
+      - Blazer
+      - Equinox
+      - Trailblazer
+      - Bolt EV
+      - Spark
+  Citroen:
+    modele:
+      - C3
+      - C4
+      - C5 Aircross
+      - C1
+      - C5
+      - C3 Aircross
+      - C6
+      - C4 Picasso
+      - C4 Cactus
+      - Berlingo
+      - Jumper
+      - Jumpy
+      - C-Zero
+  Ford:
+    modele:
+      - Focus
+      - Mustang
+      - F-150
+      - Fiesta
+      - Explorer
+      - Edge
+      - Ranger
+      - Kuga
+      - EcoSport
+      - Escape
+      - Expedition
+      - Bronco
+      - Maverick
+  Honda:
+    modele:
+      - Civic
+      - Accord
+      - CR-V
+      - HR-V
+      - Pilot
+      - Jazz
+      - City
+      - Odyssey
+      - Fit
+      - Insight
+      - Passport
+      - Ridgeline
+      - Legend
+  Mercedes-Benz:
+    modele:
+      - C-Class
+      - E-Class
+      - GLE
+      - A-Class
+      - S-Class
+      - G-Class
+      - B-Class
+      - CLA
+      - CLS
+      - GLA
+      - GLB
+      - GLS
+      - AMG GT
+  BMW:
+    modele:
+      - 3 Series
+      - 5 Series
+      - X5
+      - 7 Series
+      - X3
+      - X6
+      - 1 Series
+      - 2 Series
+      - 4 Series
+      - 8 Series
+      - Z4
+      - X1
+      - i8
+  Audi:
+    modele:
+      - A3
+      - Q5
+      - R8
+      - A4
+      - A6
+      - Q7
+      - A1
+      - A5
+      - Q3
+      - A8
+      - Q8
+      - e-tron
+      - TT
+  Toyota:
+    modele:
+      - Corolla
+      - Camry
+      - RAV4
+      - Yaris
+      - Highlander
+      - Land Cruiser
+      - Prius
+      - Avalon
+      - Fortuner
+      - Hilux
+      - Sienna
+      - Tacoma
+      - 4Runner
+  Nissan:
+    modele:
+      - Altima
+      - Maxima
+      - Rogue
+      - Sentra
+      - Pathfinder
+      - GT-R
+      - Juke
+      - Murano
+      - Armada
+      - Frontier
+      - Titan
+      - X-Trail
+      - Kicks
+  Renault:
+    modele:
+      - Clio
+      - Megane
+      - Kadjar
+      - Captur
+      - Talisman
+      - Koleos
+      - Scenic
+      - Espace
+      - Twizy
+      - Zoe
+      - Laguna
+      - Fluence
+      - Kangoo
+  Peugeot:
+    modele:
+      - 208
+      - 3008
+      - 508
+      - 2008
+      - 5008
+      - 308
+      - 206
+      - 207
+      - 607
+      - 807
+      - 4008
+      - Partner
+      - Expert
+  Volkswagen:
+    modele:
+      - Golf
+      - Tiguan
+      - Passat
+      - Polo
+      - Touareg
+      - Arteon
+      - Jetta
+      - Beetle
+      - T-Roc
+      - Scirocco
+      - Sharan
+      - Touran
+      - Amarok
+  Ferrari:
+    modele:
+      - 488
+      - Portofino
+      - Roma
+      - F8 Tributo
+      - SF90 Stradale
+      - LaFerrari
+      - California
+      - 812 Superfast
+      - 458 Italia
+      - F430
+      - Enzo
+      - GTC4Lusso
+      - Monza SP1/SP2
+  Lamborghini:
+    modele:
+      - Huracan
+      - Aventador
+      - Urus
+      - Gallardo
+      - Murcielago
+      - Reventon
+      - Diablo
+      - Miura
+      - Countach
+      - Sian
+      - Veneno
+      - Centenario
+      - Espada
+  Tesla:
+    modele:
+      - Model S
+      - Model 3
+      - Model X
+      - Model Y
+      - Roadster
+      - Cybertruck
+      - Semi
+      - Model S Plaid
+      - Model 3 Performance
+      - Model X Plaid
+      - Model Y Long Range
+      - Model 3 Standard Range Plus
+      - Model Y Performance
+
+carburant:
+  - Diesel
+  - Essence
+  - Electrique
+  - Hybride
+  - GPL
+
+boite_Vitesses:
+  - Automatique
+  - Manuelle
+  - Semi-automatique

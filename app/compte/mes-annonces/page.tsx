@@ -11,6 +11,7 @@ import UserFilterControls from "@/components/User/UserFilterControls";
 import Pagination from "@/components/Admin/Annonces/Pagination";
 import UserCard from "@/components/User/UserCard";
 import Link from "next/link";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 const MesAnnonces: React.FC = () => {
   const { data: session } = useSession();
@@ -30,8 +31,13 @@ const MesAnnonces: React.FC = () => {
   const [selectedBrand, setSelectedBrand] = useState<string>("");
   const [selectedYear, setSelectedYear] = useState<number | "">("");
   const [selectedKilometrage, setSelectedKilometrage] = useState<number | "">("");
+  const [selectedTaille, setSelectedTaille] = useState<string>("");
+  const [selectedMarqueObjet, setSelectedMarqueObjet] = useState<string>("");
+  const [selectedTypeMateriel, setSelectedTypeMateriel] = useState<string>("");
+  const [selectedMarqueMateriel, setSelectedMarqueMateriel] = useState<string>("");
+  const [selectedCategorieFourreTout, setSelectedCategorieFourreTout] = useState<string>("");
 
-  const pageSize = 9;
+  const pageSize = 16;
 
   useEffect(() => {
     const loadAnnonces = async (page: number) => {
@@ -39,38 +45,46 @@ const MesAnnonces: React.FC = () => {
       try {
         const minPrice = typeof selectedMinPrice === "number" ? selectedMinPrice : 0;
         const maxPrice = typeof selectedMaxPrice === "number" ? selectedMaxPrice : 9999999999;
-
-        const response = await fetchAnnonces(
+    
+        const filters = {
           page,
           pageSize,
           searchQuery,
-          session?.user?.id,
-          undefined,
-          { min: minPrice, max: maxPrice },
-          selectedCategory || undefined,
-          selectedCategory === "Immobilier"
-            ? {
-                chambre: selectedRooms !== "" ? selectedRooms : undefined,
-                salon: selectedBathrooms !== "" ? selectedBathrooms : undefined,
-                surface: selectedSurface !== "" ? selectedSurface : undefined,
-              }
-            : undefined,
-          selectedCategory === "Automobile"
-            ? {
-                modele: selectedModel || undefined,
-                marque: selectedBrand || undefined,
-                annee: selectedYear !== "" ? selectedYear : undefined,
-                kilometrage: selectedKilometrage !== "" ? selectedKilometrage : undefined,
-              }
-            : undefined
-        );
-
+          userId: session?.user?.id,
+          priceRange: { min: minPrice, max: maxPrice },
+          category: selectedCategory || undefined,
+          immobilierFilters: selectedCategory === "Immobilier" ? {
+            chambre: selectedRooms !== "" ? selectedRooms : undefined,
+            salon: selectedBathrooms !== "" ? selectedBathrooms : undefined,
+            surface: selectedSurface !== "" ? selectedSurface : undefined,
+          } : undefined,
+          vehiculeFilters: selectedCategory === "Automobile" ? {
+            modele: selectedModel || undefined,
+            marque: selectedBrand || undefined,
+            annee: selectedYear !== "" ? selectedYear : undefined,
+            kilometrage: selectedKilometrage !== "" ? selectedKilometrage : undefined,
+          } : undefined,
+          objetFilters: selectedCategory === "Vêtement-Objet" ? {
+            taille: selectedTaille || undefined,
+            marque: selectedMarqueObjet || undefined,
+          } : undefined,
+          materielFilters: selectedCategory === "Matériel" ? {
+            type: selectedTypeMateriel || undefined,
+            marque: selectedMarqueMateriel || undefined,
+          } : undefined,
+          fourreToutFilters: selectedCategory === "Fourre-tout" ? {
+            categorie: selectedCategorieFourreTout || undefined,
+          } : undefined,
+          status: selectedStatut || undefined,
+        };
+    
+        const response = await fetchAnnonces(filters);
         const filteredAnnonces = response.data.filter((annonce: Annonce) => {
           const matchesCategory = !selectedCategory || annonce.attributes.category === selectedCategory;
           const matchesStatut = !selectedStatut || annonce.attributes.Statut === selectedStatut;
           return matchesCategory && matchesStatut;
         });
-
+    
         setAnnonces(filteredAnnonces);
         setTotalPages(response.meta.pagination.pageCount);
       } catch (error) {
@@ -97,6 +111,11 @@ const MesAnnonces: React.FC = () => {
     selectedBrand,
     selectedYear,
     selectedKilometrage,
+    selectedTaille,
+    selectedMarqueObjet,
+    selectedTypeMateriel,
+    selectedMarqueMateriel,
+    selectedCategorieFourreTout,
     session,
   ]);
 
@@ -104,10 +123,7 @@ const MesAnnonces: React.FC = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      // Add logic to delete the annonce here, for example using a DELETE request to your API
       console.log(`Deleting annonce with id: ${id}`);
-      
-      // Optionally, remove the annonce from the state after deletion
       setAnnonces((prevAnnonces) => prevAnnonces.filter((annonce) => annonce.id !== id));
     } catch (error) {
       console.error("Error deleting annonce:", error);
@@ -136,11 +152,9 @@ const MesAnnonces: React.FC = () => {
           setSelectedStatut={setSelectedStatut}
           selectedMinPrice={selectedMinPrice}
           setSelectedMinPrice={setSelectedMinPrice}
-          selectedMaxPrice={selectedMaxPrice}
           setSelectedMaxPrice={setSelectedMaxPrice}
           selectedRooms={selectedRooms}
           setSelectedRooms={setSelectedRooms}
-          selectedBathrooms={selectedBathrooms}
           setSelectedBathrooms={setSelectedBathrooms}
           selectedSurface={selectedSurface}
           setSelectedSurface={setSelectedSurface}
@@ -152,8 +166,7 @@ const MesAnnonces: React.FC = () => {
           setSelectedYear={setSelectedYear}
           selectedKilometrage={selectedKilometrage}
           setSelectedKilometrage={setSelectedKilometrage}
-          handleSearchSubmit={() => setCurrentPage(1)}
-        />
+          handleSearchSubmit={() => setCurrentPage(1)} selectedMaxPrice={0} selectedBathrooms={0}        />
 
         {loading ? (
           <Loading />
@@ -179,6 +192,7 @@ const MesAnnonces: React.FC = () => {
         />
       </div>
       <Footer />
+      <ScrollToTopButton />
     </div>
   );
 };

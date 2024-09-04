@@ -1,5 +1,3 @@
-'use client';
-
 import React, { ChangeEvent } from 'react';
 import HomeIcon from '@mui/icons-material/Home';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -10,53 +8,69 @@ import StraightenIcon from '@mui/icons-material/Straighten';
 
 interface FormData {
   type: string;
-  address: string;
+  adresse: string;
   chambre: number;
   salon: number;
-  toillette: number;
+  toilette: number;
   surface: number;
 }
 
-interface MeublesFormProps {
+interface ImmobilierFormProps {
   formData: FormData;
-  handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  secteurOptions: string[] | undefined; // secteurOptions should be an array or undefined
+  immobilierOptions: any;
 }
 
-const MeublesForm: React.FC<MeublesFormProps> = ({ formData, handleInputChange }) => {
+const ImmobilierForm: React.FC<ImmobilierFormProps> = ({ formData, handleInputChange, secteurOptions = [], immobilierOptions }) => {
   return (
     <div className="flex flex-col gap-6 w-full">
+      {/* Adresse (Secteur) Field */}
+      <div className="relative">
+        <label htmlFor="adresse" className="block text-sm font-medium text-gray-700 mb-1">
+          Adresse (Secteur) :
+        </label>
+        <select
+          id="adresse"
+          name="adresse"
+          value={formData.adresse}
+          onChange={handleInputChange}
+          className="block w-full pl-12 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        >
+          <option value="">Sélectionnez un secteur</option>
+          {secteurOptions?.map((secteur) => (
+            <option key={secteur} value={secteur}>
+              {secteur}
+            </option>
+          ))}
+        </select>
+        <LocationOnIcon className="absolute left-3 top-[67%] transform -translate-y-1/2 text-gray-400" />
+      </div>
+
+      {/* Type Field */}
       <div className="relative">
         <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">
           Type :
         </label>
-        <input
-          type="text"
+        <select
           id="type"
           name="type"
           value={formData.type}
           onChange={handleInputChange}
           className="block w-full pl-12 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          placeholder="Type de propriété"
-        />
+        >
+          <option value="">Sélectionnez un type</option>
+          {Array.isArray(immobilierOptions.type) &&
+            immobilierOptions.type.map((type: string) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+        </select>
         <HomeIcon className="absolute left-3 top-[67%] transform -translate-y-1/2 text-gray-400" />
       </div>
 
-      <div className="relative">
-        <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
-          Adresse :
-        </label>
-        <input
-          type="text"
-          id="address"
-          name="address"
-          value={formData.address}
-          onChange={handleInputChange}
-          className="block w-full pl-12 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          placeholder="Adresse"
-        />
-        <LocationOnIcon className="absolute left-3 top-[67%] transform -translate-y-1/2 text-gray-400" />
-      </div>
-
+      {/* Chambre Field */}
       <div className="relative">
         <label htmlFor="chambre" className="block text-sm font-medium text-gray-700 mb-1">
           Chambre :
@@ -73,6 +87,7 @@ const MeublesForm: React.FC<MeublesFormProps> = ({ formData, handleInputChange }
         <HotelIcon className="absolute left-3 top-[67%] transform -translate-y-1/2 text-gray-400" />
       </div>
 
+      {/* Salon Field */}
       <div className="relative">
         <label htmlFor="salon" className="block text-sm font-medium text-gray-700 mb-1">
           Salon :
@@ -89,15 +104,16 @@ const MeublesForm: React.FC<MeublesFormProps> = ({ formData, handleInputChange }
         <WeekendIcon className="absolute left-3 top-[67%] transform -translate-y-1/2 text-gray-400" />
       </div>
 
+      {/* Toilette Field */}
       <div className="relative">
-        <label htmlFor="toillette" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="toilette" className="block text-sm font-medium text-gray-700 mb-1">
           Toilette :
         </label>
         <input
           type="number"
-          id="toillette"
-          name="toillette"
-          value={formData.toillette}
+          id="toilette"
+          name="toilette"
+          value={formData.toilette}
           onChange={handleInputChange}
           className="block w-full pl-12 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           placeholder="Nombre de toilettes"
@@ -105,6 +121,7 @@ const MeublesForm: React.FC<MeublesFormProps> = ({ formData, handleInputChange }
         <BathtubIcon className="absolute left-3 top-[67%] transform -translate-y-1/2 text-gray-400" />
       </div>
 
+      {/* Surface Field */}
       <div className="relative">
         <label htmlFor="surface" className="block text-sm font-medium text-gray-700 mb-1">
           Surface (m²) :
@@ -124,4 +141,4 @@ const MeublesForm: React.FC<MeublesFormProps> = ({ formData, handleInputChange }
   );
 };
 
-export default MeublesForm;
+export default ImmobilierForm;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { fetchAnnonces } from "@/actions/annonce-actions";
+import { fetchLatestAnnonces } from "@/actions/annonce-actions"; 
 import { Annonce } from "@/types/types";
 
 const CityProperties = () => {
@@ -10,26 +10,30 @@ const CityProperties = () => {
 
   useEffect(() => {
     const loadAnnonces = async () => {
-      const annoncesData = await fetchAnnonces(1, 100); 
-      const annonces: Annonce[] = annoncesData.data;
+      try {
+        const annoncesData = await fetchLatestAnnonces(); 
+        const annonces: Annonce[] = annoncesData.data;
 
-      const cityCount: { [key: string]: number } = {};
+        const cityCount: { [key: string]: number } = {};
 
-      annonces.forEach((annonce) => {
-        const ville = annonce.attributes.ville;
-        if (ville in cityCount) {
-          cityCount[ville] += 1;
-        } else {
-          cityCount[ville] = 1;
-        }
-      });
+        annonces.forEach((annonce) => {
+          const ville = annonce.attributes.ville;
+          if (ville in cityCount) {
+            cityCount[ville] += 1;
+          } else {
+            cityCount[ville] = 1;
+          }
+        });
 
-      const cities = Object.keys(cityCount).map((name) => ({
-        name,
-        properties: cityCount[name],
-      }));
+        const cities = Object.keys(cityCount).map((name) => ({
+          name,
+          properties: cityCount[name],
+        }));
 
-      setCityData(cities);
+        setCityData(cities);
+      } catch (error) {
+        console.error('Error loading annonces:', error);
+      }
     };
 
     loadAnnonces();

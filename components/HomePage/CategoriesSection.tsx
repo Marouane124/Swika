@@ -25,12 +25,12 @@ const categories = [
     link: "/annonces?category=Automobile"
   },
   {
-    title: "Vêtement et objet de la maison",
+    title: "Vêtements et objets de la maison",
     description: "Déstockage et articles pour la maison à prix cassés, profitez de bonnes affaires.",
     icon: <LocalMallIcon style={{ color: 'white' }} />,
     iconBackground: 'bg-[#BA68C8]',
     arrowColor: "text-[#BA68C8]",
-    link: "/annonces?category=Vente%20d%27occasion"
+    link: "/annonces?category=Vêtements%20et%20objets%20de%20la%20maison"
   },
   {
     title: "Location de matériels",

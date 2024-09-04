@@ -1,0 +1,130 @@
+transaction:
+  - À vendre
+  - À louer
+
+ville:
+  Marrakech:
+    secteur:
+      - Gueliz
+      - Afaq
+      - Hivernage
+      - Sidi Youssef Ben Ali
+      - Amelkis
+      - Targa
+      - Route de l'Ourika
+      - Palmeraie
+  Tanger:
+    secteur:
+      - Malabata
+      - Centre-ville
+      - Boubana
+      - Branes
+      - Mesnana
+      - Iberia
+      - Achakar
+  Casablanca:
+    secteur:
+      - Maarif
+      - Anfa
+      - Ain Diab
+      - Californie
+      - Sidi Maarouf
+      - Bourgogne
+      - Derb Sultan
+      - Oasis
+  Fès:
+    secteur:
+      - Médina
+      - Agdal
+      - Atlas
+      - Narjiss
+      - Zouagha
+      - Saiss
+      - Mont Fleuri
+  Safi:
+    secteur:
+      - Sidi Bouzid
+      - Souiria
+      - Jamaat Shaim
+      - Hay Salam
+      - Labrigui
+  Rabat:
+    secteur:
+      - Agdal
+      - Hassan
+      - Hay Riad
+      - Souissi
+      - Yacoub El Mansour
+      - Les Orangers
+      - Océan
+  Agadir:
+    secteur:
+      - Founty
+      - Talborjt
+      - Cité Suisse
+      - Charaf
+      - Illigh
+      - Hay Mohammadi
+      - Dakhla
+  Oujda:
+    secteur:
+      - Al Qods
+      - Sidi Yahya
+      - Hay Almassira
+      - Hay El Qods
+      - Lazaret
+      - Hay Al Qods 2
+  Meknès:
+    secteur:
+      - Hamria
+      - Toulal
+      - Marjane
+      - El Bassatine
+      - Ville Nouvelle
+      - Menzeh
+      - Sidi Bouzekri
+  Tetouan:
+    secteur:
+      - Mhannech
+      - Cabo Negro
+      - Martil
+      - Azzaitoune
+      - Hay El Matar
+      - Laayoune
+  El Jadida:
+    secteur:
+      - Haouzia
+      - Sidi Bouzid
+      - Centre Ville
+      - Deauville
+      - Moulay Abdellah
+      - Hay Essalam
+  Khouribga:
+    secteur:
+      - Quartier Admin
+      - Oued Zem
+      - Béni Mellal
+      - Centre Ville
+      - Ouled Azzouz
+  Ouarzazate:
+    secteur:
+      - Taourirt
+      - Hay El Wahda
+      - Tassoumaat
+      - Tabount
+      - Centre Ville
+      - Hay Tichka
+  Essaouira:
+    secteur:
+      - Medina
+      - El Ghazoua
+      - Azlef
+      - Diabat
+      - Sidi Kaouki
+      - Tafedna
+
+etat:
+  - Neuf
+  - Très bon
+  - Bon
+  - Endommagé

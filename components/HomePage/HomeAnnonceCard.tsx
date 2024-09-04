@@ -12,20 +12,30 @@ import HomeIcon from "@mui/icons-material/Home";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import KingBedIcon from "@mui/icons-material/KingBed";
 import SquareFootIcon from "@mui/icons-material/SquareFoot";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
+import BuildIcon from "@mui/icons-material/Build";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import Logo from "@/public/Logo.png";
 import Tooltip from "@mui/material/Tooltip";
+import CheckroomIcon from '@mui/icons-material/Checkroom';
 
 const AnnonceCard = ({ annonce, id }: { annonce: AnnonceAttributes, id: number }) => {
   const strapiURL = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   const immobilierPhotos = annonce.immobilier?.data?.attributes?.photo?.data || [];
   const vehiculePhotos = annonce.vehicule?.data?.attributes?.photo?.data || [];
+  const objetPhotos = annonce.objet?.data?.attributes?.photo?.data || [];
+  const materielPhotos = annonce.materiel?.data?.attributes?.photo?.data || [];
+  const fourreToutPhotos = annonce.fourre_tout?.data?.attributes?.photo?.data || [];
 
   const immobilierPhotoUrl = immobilierPhotos.length > 0 ? `${strapiURL}${immobilierPhotos[0].attributes.url}` : null;
   const vehiculePhotoUrl = vehiculePhotos.length > 0 ? `${strapiURL}${vehiculePhotos[0].attributes.url}` : null;
+  const objetPhotoUrl = objetPhotos.length > 0 ? `${strapiURL}${objetPhotos[0].attributes.url}` : null;
+  const materielPhotoUrl = materielPhotos.length > 0 ? `${strapiURL}${materielPhotos[0].attributes.url}` : null;
+  const fourreToutPhotoUrl = fourreToutPhotos.length > 0 ? `${strapiURL}${fourreToutPhotos[0].attributes.url}` : null;
 
-  const imageUrl = immobilierPhotoUrl || vehiculePhotoUrl || Logo;
-  const photoCount = immobilierPhotos.length > 0 ? immobilierPhotos.length : vehiculePhotos.length;
+  const imageUrl = immobilierPhotoUrl || vehiculePhotoUrl || objetPhotoUrl || materielPhotoUrl || fourreToutPhotoUrl || Logo;
+  const photoCount = immobilierPhotos.length + vehiculePhotos.length + objetPhotos.length + materielPhotos.length + fourreToutPhotos.length;
 
   // Date logic
   const createdAt = new Date(annonce.createdAt);
@@ -115,6 +125,51 @@ const AnnonceCard = ({ annonce, id }: { annonce: AnnonceAttributes, id: number }
           </div>
         </>
       );
+    } else if (annonce.category === "Vêtement-Objet" && annonce.objet?.data) {
+      const { marque, taille, categorie } = annonce.objet.data.attributes || {};
+      return (
+        <>
+          <div className="flex items-center mb-1">
+            <p className="text-gray-600 text-sm flex items-center">
+              <LocalMallIcon className="mr-1" />
+              {categorie || "Catégorie inconnue"}
+            </p>
+          </div>
+          <div className="flex items-center mb-1">
+            <p className="text-gray-600 text-sm flex items-center">
+              <CheckroomIcon className="mr-1" />
+              {taille ? `Taille: ${taille}` : "Taille inconnue"} - {marque || "Marque inconnue"}
+            </p>
+          </div>
+        </>
+      );
+    } else if (annonce.category === "Matériel" && annonce.materiel?.data) {
+      const { type, marque } = annonce.materiel.data.attributes || {};
+      return (
+        <>
+          <div className="flex items-center mb-1">
+            <p className="text-gray-600 text-sm flex items-center">
+              <BuildIcon className="mr-1" />
+              {type || "Type inconnu"}
+            </p>
+          </div>
+          <div className="flex items-center mb-1">
+            <p className="text-gray-600 text-sm flex items-center">
+              {marque || "Marque inconnue"}
+            </p>
+          </div>
+        </>
+      );
+    } else if (annonce.category === "Fourre-tout" && annonce.fourre_tout?.data) {  
+      const { categorie } = annonce.fourre_tout.data.attributes || {};  
+      return (
+        <div className="flex items-center mb-1">
+          <p className="text-gray-600 text-sm flex items-center">
+            <ListAltIcon className="mr-1" />
+            {categorie || "Catégorie inconnue"}
+          </p>
+        </div>
+      );
     } else {
       return <p className="text-gray-600 text-sm">Il n&apos;y a pas de détails pour cette annonce.</p>;
     }
@@ -122,7 +177,7 @@ const AnnonceCard = ({ annonce, id }: { annonce: AnnonceAttributes, id: number }
 
   return (
     <Link href={`/annonce/${id}`} passHref>
-      <div className="bg-white rounded-lg shadow-md p-4 flex flex-col relative hover:shadow-gray-400 cursor-pointer border border-gray-300">
+      <div className="bg-white rounded-lg shadow-md p-4 flex flex-col relative hover:shadow-gray-400 cursor-pointer border border-gray-300 h-full"> 
         <div className="absolute top-2 left-2 bg-gray-800 text-white text-xs px-2 py-1 rounded z-10">
           {formattedDate}
         </div>
@@ -133,7 +188,7 @@ const AnnonceCard = ({ annonce, id }: { annonce: AnnonceAttributes, id: number }
             src={imageUrl}
             alt={annonce.title}
             priority={true}
-            className="w-full h-48 object-cover"
+            className="w-full h-48 object-scale-down"
           />
           {photoCount > 0 && (
             <div className="absolute bottom-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 rounded flex items-center z-10">

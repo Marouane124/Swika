@@ -31,7 +31,9 @@ export interface VehiculeAttributes {
   modele: string;
   marque: string;
   annee: number;
-  kilometrage: string;
+  kilometrage: number;
+  carburant: string;
+  boite_Vitesses: string;
   photo: {
     data: ImageData[];
   };
@@ -44,6 +46,52 @@ export interface Vehicule {
   };
 }
 
+export interface ObjetAttributes {
+  marque: string;
+  taille: string;
+  categorie: string;
+  photo: {
+    data: ImageData[];
+  };
+}
+
+export interface Objet {
+  data: {
+    id: number;
+    attributes: ObjetAttributes;
+  };
+}
+
+export interface MaterielAttributes {
+  marque: string;
+  type: string;
+  disponibilite: boolean;
+  photo: {
+    data: ImageData[];
+  };
+}
+
+export interface Materiel {
+  data: {
+    id: number;
+    attributes: MaterielAttributes;
+  };
+}
+
+export interface FourreToutAttributes {
+  categorie: string;
+  photo: {
+    data: ImageData[];
+  };
+}
+
+export interface FourreTout {
+  data: {
+    id: number;
+    attributes: FourreToutAttributes;
+  };
+}
+
 export interface UserAttributes {
   username: string;
   email: string;
@@ -53,7 +101,7 @@ export interface UserAttributes {
   createdAt: string;
   updatedAt: string;
   phone: string;
-  image?: ImageData; 
+  image?: ImageData;
 }
 
 export interface User {
@@ -69,7 +117,6 @@ export interface User {
   image?: ImageData;
 }
 
-
 export interface AnnonceAttributes {
   id: number;
   title: string;
@@ -80,8 +127,13 @@ export interface AnnonceAttributes {
   publishedAt: string;
   category: string;
   ville: string;
+  transaction: string;
+  etat: string;
   immobilier?: Immobilier;
   vehicule?: Vehicule;
+  objet?: Objet;
+  materiel?: Materiel;
+  fourre_tout?: FourreTout; // Updated to match the API
   users_permissions_user: User;
   Statut: string | null;
 }

@@ -3,8 +3,11 @@ import path from 'path';
 import yaml from 'js-yaml';
 import React from 'react';
 import AnnonceForm from '@/components/Forms/AnnonceForm';
+import { fetchAnnonceById } from '@/actions/annonce-actions';
 
-export default async function CreerAnnoncePage() {
+export default async function EditAnnoncePage({ params }: { params: { id: string } }) {
+  const { id } = params;
+
   // Load options from YAML files
   const vehicleFilePath = path.join(process.cwd(), 'config', 'vehicleOptions.yaml');
   const vehicleFileContents = fs.readFileSync(vehicleFilePath, 'utf8');
@@ -30,8 +33,11 @@ export default async function CreerAnnoncePage() {
   const secteurFileContents = fs.readFileSync(secteurFilePath, 'utf8');
   const secteurOptions = yaml.load(secteurFileContents);
 
+  // Fetch the annonce data by ID
+  const initialData = await fetchAnnonceById(parseInt(id));
+
   return (
-    <div >
+    <div>
       <AnnonceForm 
         vehicleOptions={vehicleOptions} 
         immobilierOptions={immobilierOptions} 
@@ -39,6 +45,8 @@ export default async function CreerAnnoncePage() {
         materielOptions={materielOptions} 
         fourreToutOptions={fourreToutOptions} 
         secteurOptions={secteurOptions} 
+        initialData={initialData} 
+        isEditMode={true} 
       />
     </div>
   );

@@ -5,43 +5,53 @@ import AnnonceCard from "@/components/HomePage/HomeAnnonceCard";
 import Loading from "@/components/Loading";
 import Link from "next/link";
 
+type Category = "Automobile" | "Immobilier" | "Vêtements et objets de la maison" | "Location de matériels" | "Fourre-tout";
+
+const categoryMap: Record<Category, string> = {
+  "Automobile": "Automobile",
+  "Immobilier": "Immobilier",
+  "Vêtements et objets de la maison": "Vêtement-Objet",
+  "Location de matériels": "Matériel",
+  "Fourre-tout": "Fourre-tout"
+};
+
 interface CategoriesTabsProps {
-  selectedCategory: string;
-  onSelectCategory: (category: string) => void;
+  selectedCategory: Category;
+  onSelectCategory: (category: Category) => void;
 }
 
 const CategoriesTabs: React.FC<CategoriesTabsProps> = ({ selectedCategory, onSelectCategory }) => (
   <div className="flex space-x-4 justify-center mb-8">
-    {["Automobile", "Immobilier", "Vente d'occasion", "Fourre-tout"].map((category) => (
+    {Object.keys(categoryMap).map((displayName) => (
       <button
-        key={category}
+        key={displayName}
         className={`py-2 px-4 border rounded-full ${
-          selectedCategory === category ? "text-white bg-orange-500" : "text-black bg-white"
-        } ${selectedCategory === category ? "border-none" : "border-gray-400"}`}
-        onClick={() => onSelectCategory(category)}
+          selectedCategory === displayName ? "text-white bg-orange-500" : "text-black bg-white"
+        } ${selectedCategory === displayName ? "border-none" : "border-gray-400"}`}
+        onClick={() => onSelectCategory(displayName as Category)}
         style={{
-          borderColor: selectedCategory === category ? "transparent" : "#e0e0e0",
-          backgroundColor: selectedCategory === category ? "#FFDAD4" : "white",
-          color: selectedCategory === category ? "#000" : "black",
+          borderColor: selectedCategory === displayName ? "transparent" : "#e0e0e0",
+          backgroundColor: selectedCategory === displayName ? "#FFDAD4" : "white",
+          color: selectedCategory === displayName ? "#000" : "black",
           padding: "6px 16px",
           fontSize: "14px",
         }}
       >
-        {category}
+        {displayName}
       </button>
     ))}
   </div>
 );
 
 const AnnonceRecentes: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState("Automobile");
+  const [selectedCategory, setSelectedCategory] = useState<Category>("Automobile");
   const [annonces, setAnnonces] = useState<Annonce[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadAnnonces = async () => {
       setLoading(true);
-      const data = await fetchAnnoncesByCategory(selectedCategory);
+      const data = await fetchAnnoncesByCategory(categoryMap[selectedCategory]);
       setAnnonces(data);
       setLoading(false);
     };
@@ -71,7 +81,7 @@ const AnnonceRecentes: React.FC = () => {
       )}
       <div className="flex justify-center mt-8">
         <Link
-          href={`/annonces?category=${selectedCategory}`}
+          href={`/annonces?category=${categoryMap[selectedCategory]}`}
           className="py-2 px-6 bg-orange-500 text-white rounded-full text-sm font-semibold hover:bg-orange-600 transition-transform transform hover:scale-105"
         >
           Voir tout
@@ -82,4 +92,3 @@ const AnnonceRecentes: React.FC = () => {
 };
 
 export default AnnonceRecentes;
-  

@@ -15,6 +15,23 @@ import AnnonceCard from '@/components/AnnonceCard';
 import { Avatar } from '@mui/material';
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import HomeIcon from '@mui/icons-material/Home';
+import RoomIcon from '@mui/icons-material/Room';
+import HotelIcon from '@mui/icons-material/Hotel';
+import WeekendIcon from '@mui/icons-material/Weekend';
+import BathtubIcon from '@mui/icons-material/Bathtub';
+import StraightenIcon from '@mui/icons-material/Straighten';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
+import SpeedIcon from '@mui/icons-material/Speed';
+import SettingsIcon from '@mui/icons-material/Settings';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import BuildIcon from '@mui/icons-material/Build';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import CheckroomIcon from '@mui/icons-material/Checkroom';
+
 
 const DetailAnnonce: React.FC = () => {
   const [annonce, setAnnonce] = useState<Annonce | null>(null);
@@ -31,8 +48,10 @@ const DetailAnnonce: React.FC = () => {
           const fetchedAnnonce = await fetchAnnonceById(parseInt(id as string));
           if (fetchedAnnonce) {
             setAnnonce(fetchedAnnonce);
-
-            const similarAnnonces = await fetchSimilarAnnonces(fetchedAnnonce.attributes.category, fetchedAnnonce.attributes.title);
+            const similarAnnonces = await fetchSimilarAnnonces(
+              fetchedAnnonce.attributes.category, 
+              fetchedAnnonce.attributes.title
+            );
             setSimilarAnnonces(similarAnnonces);
           } else {
             setError('Failed to fetch annonce details.');
@@ -44,7 +63,6 @@ const DetailAnnonce: React.FC = () => {
         }
       }
     };
-
     fetchAnnonceDetails();
   }, [id]);
 
@@ -64,18 +82,23 @@ const DetailAnnonce: React.FC = () => {
     return <div className="min-h-screen bg-white flex items-center justify-center">No annonce found</div>;
   }
 
-  const { title, description, price, ville, updatedAt, immobilier, vehicule } = annonce.attributes;
-
-  const immobilierPhotos = immobilier?.data?.attributes?.photo?.data || [];
-  const vehiculePhotos = vehicule?.data?.attributes?.photo?.data || [];
-
+  const { title, description, price, ville, updatedAt, immobilier, vehicule, etat, objet, materiel, fourre_tout } = annonce.attributes;
   const strapiURL = process.env.NEXT_PUBLIC_STRAPI_URL as string;
 
-  const imageUrls = immobilierPhotos.length > 0 
-    ? immobilierPhotos.map((photo) => photo.attributes.url)
-    : vehiculePhotos.map((photo) => photo.attributes.url);
+  // Determine which images to load based on the category
+  const imageUrls: string[] = [];
+  if (immobilier?.data) {
+    imageUrls.push(...immobilier.data.attributes.photo.data.map((photo) => photo.attributes.url));
+  } else if (vehicule?.data) {
+    imageUrls.push(...vehicule.data.attributes.photo.data.map((photo) => photo.attributes.url));
+  } else if (objet?.data) {
+    imageUrls.push(...objet.data.attributes.photo.data.map((photo) => photo.attributes.url));
+  } else if (materiel?.data) {
+    imageUrls.push(...materiel.data.attributes.photo.data.map((photo) => photo.attributes.url));
+  } else if (fourre_tout?.data) {
+    imageUrls.push(...fourre_tout.data.attributes.photo.data.map((photo) => photo.attributes.url));
+  }
 
-  // Function to calculate relative time
   const getRelativeTime = (dateStr: string) => {
     const date = new Date(dateStr);
     const now = new Date();
@@ -145,7 +168,7 @@ const DetailAnnonce: React.FC = () => {
                       alt={`Image ${index + 1}`}
                       width={800} 
                       height={600} 
-                      className="object-cover w-full h-80 rounded-lg"
+                      className="object-scale-down w-full h-80 rounded-lg"
                       priority
                     />
                   </div>
@@ -164,7 +187,6 @@ const DetailAnnonce: React.FC = () => {
           <Grid item xs={12} md={6} className="pl-8">
             <div className="bg-white p-6 rounded-lg shadow-2xl mb-6">
               <h1 className="text-4xl font-extrabold text-[#FF471C] mb-2">{title}</h1>
-              <h1 className="text-4xl font-extrabold text-[#FF471C] mb-2">{title}</h1>
 
               <p className="text-gray-600 mb-3 flex items-center text-sm">
                 <LocationOnIcon className="mr-1" />
@@ -179,35 +201,112 @@ const DetailAnnonce: React.FC = () => {
 
               <p className="text-gray-700 mb-4">{description}</p>
 
+              <p className="text-gray-700 mb-4 flex items-center">
+                <SettingsIcon className="mr-1" />
+                <strong>État: </strong> {etat || 'N/A'}
+              </p>
+
+              {/* Uniform structure for all categories */}
               {immobilier?.data && (
                 <div className="mb-4">
-                  <div className="flex flex-wrap mb-2">
-                    <p className="w-1/2 sm:w-1/3"><strong>Type: </strong>{immobilier.data.attributes.type || 'N/A'}</p>
-                    <p className="w-1/2 sm:w-1/3"><strong>Salons: </strong>{immobilier.data.attributes.salon || 'N/A'}</p>
-                  </div>
-                  <div className="flex flex-wrap mb-2">
-                    <p className="w-1/2 sm:w-1/3"><strong>Adresse: </strong>{immobilier.data.attributes.adresse || 'N/A'}</p>
-                    <p className="w-1/2 sm:w-1/3"><strong>Toilettes: </strong>{immobilier.data.attributes.toilette || 'N/A'}</p>
-                  </div>
-                  <div className="flex flex-wrap mb-2">
-                    <p className="w-1/2 sm:w-1/3"><strong>Surface: </strong>{immobilier.data.attributes.surface || 'N/A'} m²</p>
-                    <p className="w-1/2 sm:w-1/3"><strong>Chambres: </strong>{immobilier.data.attributes.chambre || 'N/A'}</p>
+                  <p className="w-full text-gray-700 mb-4 flex items-center">
+                    <RoomIcon className="mr-1" />
+                    <strong>Secteur: </strong> {immobilier.data.attributes.adresse || 'N/A'}
+                  </p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex items-center">
+                      <HomeIcon className="mr-1 text-gray-700" />
+                      <p className="text-gray-700"><strong>Type: </strong>{immobilier.data.attributes.type || 'N/A'}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <WeekendIcon className="mr-1 text-gray-700" />
+                      <p className="text-gray-700"><strong>Salons: </strong>{immobilier.data.attributes.salon || 'N/A'}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <BathtubIcon className="mr-1 text-gray-700" />
+                      <p className="text-gray-700"><strong>Toilettes: </strong>{immobilier.data.attributes.toilette || 'N/A'}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <StraightenIcon className="mr-1 text-gray-700" />
+                      <p className="text-gray-700"><strong>Surface: </strong>{immobilier.data.attributes.surface || 'N/A'} m²</p>
+                    </div>
+                    <div className="flex items-center">
+                      <HotelIcon className="mr-1 text-gray-700" />
+                      <p className="text-gray-700"><strong>Chambres: </strong>{immobilier.data.attributes.chambre || 'N/A'}</p>
+                    </div>
                   </div>
                 </div>
               )}
 
+              {/* Handle Automobile, Vêtement-Objet, Matériel, Fourre-tout with uniform spacing */}
               {vehicule?.data && (
-                <div>
-                  <p><strong>Modèle: </strong>{vehicule.data.attributes.modele || 'N/A'}</p>
-                  <p><strong>Année: </strong>{vehicule.data.attributes.annee || 'N/A'}</p>
+                <div className="mb-4 grid grid-cols-2 gap-4">
+                  <div className="flex items-center">
+                    <DirectionsCarIcon className="mr-1 text-gray-700" />
+                    <p className="text-gray-700"><strong>Modèle: </strong>{vehicule.data.attributes.modele || 'N/A'}</p>
+                  </div>
+                  <div className="flex items-center">
+                    <CalendarTodayIcon className="mr-1 text-gray-700" />
+                    <p className="text-gray-700"><strong>Année: </strong>{vehicule.data.attributes.annee || 'N/A'}</p>
+                  </div>
+                  <div className="flex items-center">
+                    <LocalGasStationIcon className="mr-1 text-gray-700" />
+                    <p className="text-gray-700"><strong>Carburant: </strong>{vehicule.data.attributes.carburant || 'N/A'}</p>
+                  </div>
+                  <div className="flex items-center">
+                    <SettingsIcon className="mr-1 text-gray-700" />
+                    <p className="text-gray-700"><strong>Boîte de vitesses: </strong>{vehicule.data.attributes.boite_Vitesses || 'N/A'}</p>
+                  </div>
+                  <div className="flex items-center">
+                    <SpeedIcon className="mr-1 text-gray-700" />
+                    <p className="text-gray-700"><strong>Kilométrage: </strong>{vehicule.data.attributes.kilometrage || 'N/A'}</p>
+                  </div>
                 </div>
               )}
+
+              {objet?.data && (
+                <div className="mb-4 grid grid-cols-2 gap-4">
+                  <div className="flex items-center">
+                    <LocalMallIcon className="mr-1 text-gray-700" />
+                    <p className="text-gray-700"><strong>Catégorie: </strong>{objet.data.attributes.categorie || 'N/A'}</p>
+                  </div>
+                  <div className="flex items-center">
+                    <StraightenIcon className="mr-1 text-gray-700" />
+                    <p className="text-gray-700"><strong>Taille: </strong>{objet.data.attributes.taille || 'N/A'}</p>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckroomIcon className="mr-1 text-gray-700" />
+                    <p className="text-gray-700"><strong>Marque: </strong>{objet.data.attributes.marque || 'N/A'}</p>
+                  </div>
+                </div>
+              )}
+
+              {materiel?.data && (
+                <div className="mb-4 grid grid-cols-2 gap-4">
+                  <div className="flex items-center">
+                    <BuildIcon className="mr-1 text-gray-700" />
+                    <p className="text-gray-700"><strong>Type: </strong>{materiel.data.attributes.type || 'N/A'}</p>
+                  </div>
+                  <div className="flex items-center">
+                    <EngineeringIcon className="mr-1 text-gray-700" />
+                    <p className="text-gray-700"><strong>Marque: </strong>{materiel.data.attributes.marque || 'N/A'}</p>
+                  </div>
+                </div>
+              )}
+
+              {fourre_tout?.data && (
+                <div className="mb-4 grid grid-cols-2 gap-4">
+                  <div className="flex items-center">
+                    <ListAltIcon className="mr-1 text-gray-700" />
+                    <p className="text-gray-700"><strong>Catégorie: </strong>{fourre_tout.data.attributes.categorie || 'N/A'}</p>
+                  </div>
+                </div>
+              )}
+
             </div>
 
             <div className="flex justify-end">
-              <button
-                className="bg-[#FF471C] text-white px-4 py-2 rounded-lg hover:bg-[#FF6F3C]"
-              >
+              <button className="bg-[#FF471C] text-white px-4 py-2 rounded-lg hover:bg-[#FF6F3C]">
                 Contacter le vendeur
               </button>
             </div>

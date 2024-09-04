@@ -125,7 +125,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({
               <MenuItem value="">Toutes les catégories</MenuItem>
               <MenuItem value="Automobile">Automobile</MenuItem>
               <MenuItem value="Immobilier">Immobilier</MenuItem>
-              <MenuItem value="Vente d'occasion">Vente d&apos;occasion</MenuItem>
+              <MenuItem value="Vêtement-Objet">Vêtements et objets de la maison</MenuItem>
+              <MenuItem value="Matériel">Location de matériels</MenuItem>
               <MenuItem value="Fourre-tout">Fourre-tout</MenuItem>
             </Select>
           </FormControl>

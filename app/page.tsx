@@ -15,6 +15,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Newsletter from "@/components/HomePage/Newsletter";
 import PromoCards from "@/components/HomePage/PromoCards";
 import CityProperties from "@/components/HomePage/CityProperties";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 const Page: React.FC = () => {
   const [annonces, setAnnonces] = useState<Annonce[]>([]);
@@ -76,35 +77,11 @@ const Page: React.FC = () => {
       
       <CityProperties />
 
-{/*
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className="container mx-auto py-10 px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {visibleAnnonces.map((annonce) => (
-              <AnnonceCardOld key={annonce.id} annonce={annonce.attributes} />
-            ))}
-          </div>
-
-          {itemsToShow < annonces.length && (
-            <div className="flex justify-center mt-8">
-              <button
-                onClick={loadMore}
-                className="flex items-center px-6 py-3 text-lg font-medium transition-colors duration-300 bg-purple-600 text-white rounded-lg focus:shadow-outline hover:bg-purple-700"
-              >
-                Plus d&apos;annonces
-                <ArrowDownwardIcon className="ml-2" />
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-*/}
-
       <Newsletter />
 
       <Footer />
+
+      <ScrollToTopButton />
     </div>
   );
 };
