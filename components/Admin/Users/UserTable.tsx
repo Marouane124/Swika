@@ -13,8 +13,8 @@ const UserTable: React.FC<UserTableProps> = ({ users, handleBlock, handleUnblock
       <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden table-fixed text-sm">
         <thead className="bg-[#f76545] text-white">
           <tr>
-            <th className="w-1/4 py-2 px-3 text-left">Username</th>
-            <th className="w-1/4 py-2 px-3 text-left">Email</th>
+            <th className="w-1/4 py-2 px-3 text-left">Nom</th>
+            <th className="w-1/4 py-2 px-3 text-left">E-mail</th>
             <th className="w-1/4 py-2 px-3 text-left">Status</th>
             <th className="w-1/4 py-2 px-3 text-left">Actions</th>
           </tr>
@@ -28,24 +28,27 @@ const UserTable: React.FC<UserTableProps> = ({ users, handleBlock, handleUnblock
                 {user.blocked ? 'Blocked' : 'Active'}
               </td>
               <td className="w-1/4 py-2 px-3">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleBlock(user.id);
-                  }}
-                  className="mr-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors duration-200 text-xs"
-                >
-                  Block
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleUnblock(user.id);
-                  }}
-                  className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors duration-200 text-xs"
-                >
-                  Unblock
-                </button>
+                {user.blocked ? (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleUnblock(user.id);
+                    }}
+                    className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors duration-200 text-xs"
+                  >
+                    unblock
+                  </button>
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleBlock(user.id);
+                    }}
+                    className="mr-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors duration-200 text-xs"
+                  >
+                    block
+                  </button>
+                )}
               </td>
             </tr>
           ))}

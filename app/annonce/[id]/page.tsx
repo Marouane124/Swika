@@ -126,7 +126,7 @@ const DetailAnnonce: React.FC = () => {
   const formattedUpdatedAt = getRelativeTime(updatedAt);
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-16">
+    <div className="min-h-screen bg-gray-100 pt-8">
       <Nav />
       <div className="container mx-auto pt-20 pb-12">
         <Grid container spacing={2} className="flex-1 mt-10 bg-white">
@@ -314,7 +314,8 @@ const DetailAnnonce: React.FC = () => {
         </Grid>
 
         {/* Similar Products Section */}
-        <div className="mt-12">
+        {similarAnnonces.length > 0 && (
+        <div className="mt-6 ">
           <h2 className="text-3xl font-bold text-[#FF471C] mb-4">Produits similaires</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {similarAnnonces.map((similarAnnonce) => (
@@ -326,6 +327,7 @@ const DetailAnnonce: React.FC = () => {
             ))}
           </div>
         </div>
+        )}
       </div>
       <Footer />
     </div>

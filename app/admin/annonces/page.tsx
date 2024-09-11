@@ -35,8 +35,10 @@ const AnnoncePage: React.FC = () => {
       }
 
       if (statut) {
-        filters.status = statut;
+        filters.statut = statut; // Ensure 'statut' is passed correctly to the API
       }
+
+      console.log("Filters being sent to the API:", filters); // Debugging statement
 
       const response = await fetchAnnonces(filters);
       setAnnonces(response.data);
@@ -56,7 +58,7 @@ const AnnoncePage: React.FC = () => {
   // Load annonces when the page or filters change
   useEffect(() => {
     loadAnnonces(currentPage, searchQuery, selectedCategory, selectedStatut);
-  }, [currentPage, searchQuery, selectedCategory, selectedStatut]);
+  }, [currentPage, searchQuery, selectedCategory, selectedStatut]); // Ensure this hook updates correctly when statut changes
 
   // Handle approve and reload the table
   const handleApprove = async (id: number) => {
