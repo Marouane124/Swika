@@ -13,6 +13,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { registerUserAction } from '@/actions/auth-actions';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { z } from 'zod';
+import { signIn } from 'next-auth/react';
 
 const signUpSchema = z.object({
   name: z.string().min(1, 'Nom requis'),
@@ -85,8 +86,19 @@ export default function SignUpPage() {
     try {
       const apiResult = await registerUserAction(formData);
       if (apiResult.success) {
-        toast.success('Inscription réussie !', { duration: 1000 });
-        router.push("/signin");
+        // Automatically log in the user after successful registration
+        const signInResult = await signIn("credentials", {
+          redirect: false,
+          email: formValues.email,
+          password: formValues.password,
+        });
+
+        if (signInResult?.error) {
+          toast.error('Inscription réussie mais échec de la connexion. Veuillez réessayer.', { duration: 1500 });
+        } else {
+          toast.success('Inscription et connexion réussies !', { duration: 1000 });
+          router.push("/"); // Redirect to home page or dashboard
+        }
       } else {
         toast.error(apiResult.error || 'Erreur lors de l\'inscription. Veuillez réessayer.', { duration: 1500 });
       }
@@ -200,7 +212,7 @@ export default function SignUpPage() {
             </div>
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
-          <div className="mb-6">
+          <div className="mb-4">
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-[#333333]">
               Confirmer le mot de passe
             </label>
@@ -210,7 +222,7 @@ export default function SignUpPage() {
                 name="confirmPassword"
                 id="confirmPassword"
                 className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-[#FF6F3C] focus:border-[#FF6F3C] sm:text-sm"
-                placeholder="Confirmer le mot de passe"
+                placeholder="Confirmer votre mot de passe"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <LockIcon style={{ color: '#333333' }} />
@@ -228,21 +240,13 @@ export default function SignUpPage() {
             </div>
             {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
           </div>
-          <div>
+          <div className="flex items-center justify-between">
             <button
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#FF471C] hover:bg-[#FF6F3C] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6F3C]"
             >
-              Créer un compte
+              S'inscrire
             </button>
-          </div>
-          <div className="mt-6 relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">ou</span>
-            </div>
           </div>
         </form>
         <div className="mt-6 flex justify-around">
