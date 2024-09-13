@@ -126,7 +126,7 @@ const DetailAnnonce: React.FC = () => {
   const formattedUpdatedAt = getRelativeTime(updatedAt);
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-8">
+    <div className="min-h-screen bg-gray-100 pt-0">
       <Nav />
       <div className="container mx-auto pt-20 pb-12">
         <Grid container spacing={2} className="flex-1 mt-10 bg-white">
